@@ -8,6 +8,9 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QAction>
+#include <QTimer>
+#include <stdlib.h>
+#include <unistd.h>
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +24,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
+    void pwm(int value);
+    qreal adc(int channel);
 private slots:
 
     void on_actionQuit_triggered();
@@ -28,6 +33,12 @@ private slots:
     void closeEvent(QCloseEvent *event);
 
     void on_trayicon_activated(QSystemTrayIcon::ActivationReason reason);
+
+    void on_tabWidget_currentChanged(int index);
+
+    void on_timer_timeout();
+
+    void on_verticalSlider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
@@ -38,6 +49,7 @@ private:
     QIcon rpiicon;
     QIcon quiticon;
     QAction *quitaction;
+    QTimer timer;
 };
 
 #endif // MAINWINDOW_H
