@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <stdlib.h>
 #include <unistd.h>
+#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ public:
     
     void pwm(int value);
     qreal adc(int channel);
+
 private slots:
 
     void on_actionQuit_triggered();
@@ -50,6 +52,20 @@ private:
     QIcon quiticon;
     QAction *quitaction;
     QTimer timer;
+
+    class hwinfo
+    {
+        QFile cpu_temp;
+        QProcess vcgencmd;
+    public:
+        void set_up();
+        qreal out_to_qreal(QByteArray in);
+        qreal get_cpu_temp();
+        qreal get_gpu_temp();
+        QByteArray from_vcdencmd(QStringList args);
+    };
+
+    hwinfo hw;
 };
 
 #endif // MAINWINDOW_H
