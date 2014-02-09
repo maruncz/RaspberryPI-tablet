@@ -10,6 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = RaspberryPI
 TEMPLATE = app
+INSTALLS += target
+target.path=/home/pi/c/qt/raspberrypi
 
 
 SOURCES += main.cpp\
@@ -18,3 +20,9 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    RaspberryPI.qrc
+
+INCLUDEPATH += /home/martin/rpi/rasp-pi-rootfs/usr/local/include
+LIBS += -L/home/martin/rpi/rasp-pi-rootfs/usr/local/lib -lwiringPi

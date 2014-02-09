@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="quit">Crystal_button_cancel.svg</file>
+        <file alias="add">Ps_GreekCross.svg</file>
+        <file alias="rpi">Raspberry_Pi_Logo.svg</file>
+    </qresource>
+</RCC>
