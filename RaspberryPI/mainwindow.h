@@ -28,6 +28,7 @@ public:
     
     void pwm(int value);
     qreal adc(int channel);
+    static void interrupt2();
 
 private slots:
 
@@ -43,7 +44,7 @@ private slots:
 
     void on_verticalSlider_valueChanged(int value);
 
-    void interrupt2();
+
 
 private:
     Ui::MainWindow *ui;
