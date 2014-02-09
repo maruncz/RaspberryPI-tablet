@@ -31,6 +31,9 @@ bin/Release/AVR.elf: obj/Release/main.o
 obj/Release/main.o: main.c
 	avr-gcc ${CFLAGS} -I${INCLUDE} -c main.c -o obj/Release/main.o
 
+AVRsize: bin/Release/AVR.elf
+	avr-size bin/Release/AVR.elf
+
 clean: cleanRelease
 
 cleanRelease:

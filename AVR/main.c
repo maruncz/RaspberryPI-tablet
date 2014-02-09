@@ -38,12 +38,12 @@ int main(void)
 
     while(1)
     {
-        /*if (UCSRA & (1<<RXC))
+        if (UCSRA & (1<<RXC))
         {
             i=UDR;
             UDR=i;
             uart_cek();
-        };*/
+        };
         if (SPSR & (1<<SPIF))
         {
             i=SPDR;
@@ -52,6 +52,7 @@ int main(void)
                 spi_prijem();
                 i=SPDR;
                 OCR0=i;
+                UDR=i;
             };
             if(i==0x41)
             {

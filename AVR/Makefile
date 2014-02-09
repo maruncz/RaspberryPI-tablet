@@ -1,5 +1,5 @@
 DEVICE=atmega16a
-CFLAGS= -Wall -W -s -O -mmcu=${DEVICE} -DF_CPU=14745600UL
+CFLAGS= -Wall -W -s -O -mmcu=${DEVICE} -DF_CPU=8143360UL
 LFLAGS= -s -mmcu=${DEVICE} -Wl,-Map=bin/Release/AVR.map,--cref -s
 INCLUDE= .
 
