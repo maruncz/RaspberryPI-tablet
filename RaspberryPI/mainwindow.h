@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <wiringPiSPI.h>
+#include <wiringPi.h>
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QMessageBox>
@@ -42,10 +43,12 @@ private slots:
 
     void on_verticalSlider_valueChanged(int value);
 
+    void interrupt2();
+
 private:
     Ui::MainWindow *ui;
 
-    bool q;
+    int q;
     QSystemTrayIcon trayicon;
     QMenu traymenu;
     QIcon rpiicon;
@@ -67,5 +70,7 @@ private:
 
     hwinfo hw;
 };
+
+void interrupt();
 
 #endif // MAINWINDOW_H

@@ -7,8 +7,29 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     q=false;
-    char f;
+    int f;
     f=wiringPiSPISetup(0,61000);
+    if(f<0)
+    {
+        QMessageBox::critical(this,"ERROR","Could not initialize SPI");
+        q=2;
+        close();
+    }
+    f=wiringPiSetupSys();
+    if(f<0)
+    {
+        QMessageBox::critical(this,"ERROR","Could not initialize GPIO");
+        q=2;
+        close();
+    }
+    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
+    if(f<0)
+    {
+        QMessageBox::critical(this,"ERROR","Could not initialize GPIO");
+        q=2;
+        close();
+    }
+
     rpiicon.addFile(":/icons/rpi",QSize(64,64),QIcon::Normal,QIcon::Off);
     quiticon.addFile(":/icons/quit",QSize(64,64),QIcon::Normal,QIcon::Off);
     trayicon.setIcon(rpiicon);
@@ -42,8 +63,13 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if(q)
+    switch(q)
     {
+    case 0:
+        hide();
+        event->ignore();
+        break;
+    case 1:
         switch(QMessageBox::question(this,"Quit?","Do you really want to quit?",QMessageBox::Yes,QMessageBox::No))
         {
         case QMessageBox::Yes:
@@ -54,13 +80,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
             q=false;
             break;
         }
+        break;
+    case 2:
+        event->accept();
+        break;
+
     }
-    else
-    {
-        hide();
-        trayicon.showMessage("In tray","Application was minimized to tray",QSystemTrayIcon::Information,1000);
-        event->ignore();
-    }
+
 }
 
 void MainWindow::on_trayicon_activated(QSystemTrayIcon::ActivationReason reason)
@@ -75,8 +101,6 @@ void MainWindow::on_trayicon_activated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
 }
-
-
 
 
 void MainWindow::on_tabWidget_currentChanged(int index)
@@ -134,11 +158,17 @@ qreal MainWindow::adc(int channel)
     return volty;
 }
 
+
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     pwm(value);
     ui->pwm->setText(QString::number(value));
     ui->proc->setText(QString::number((qreal(value)/256)*100)+"%");
+}
+
+void MainWindow::interrupt2()
+{
+    QMessageBox::information(this,"interrupt","interrupt");
 }
 
 
@@ -194,4 +224,10 @@ QByteArray MainWindow::hwinfo::from_vcdencmd(QStringList args)
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();
+}
+
+
+void interrupt()
+{
+    w.interrupt2();
 }
