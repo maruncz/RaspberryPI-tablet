@@ -12,27 +12,21 @@ void spi_prijem(void)
     do{}
     while (!(SPSR & (1<<SPIF)));
 }
-char * adc_mereni(char channel)
+void adc(char channel)
 {
+    char i;
     static char vysledek[2];
     ADCSRA=(ADCSRA|(1<<ADSC));
     do{}
     while(!(ADCSRA&(1<<ADSC)));
     vysledek[0] = ADCL;
     vysledek[1] = ADCH;
-    return vysledek;
-}
-
-void adc_posli(char *vysledek)
-{
-    char i;
-    char j=1;
-    SPDR=(vysledek+j)+168;
+    SPDR=(vysledek[1])+168;
     spi_prijem();
     i=SPDR;
     UDR=5;
     uart_cek();
-    SPDR=vysledek;
+    SPDR=vysledek[0];
     spi_prijem();
     i=SPDR;
     UDR=6;
@@ -87,12 +81,12 @@ int main(void)
                 UDR=i;
                 break;
             case 0x41:
-                adc_posli(adc_mereni(0));
+                adc(0);
                 UDR=3;
                 uart_cek();
                 break;
             case 0x42:
-                adc_posli(adc_mereni(1));
+                adc(1);
                 UDR=4;
                 uart_cek();
                 break;
