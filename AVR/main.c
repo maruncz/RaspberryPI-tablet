@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/wdt.h>
 #include <util/delay.h>
 
 void uart_cek(void)
@@ -34,16 +35,12 @@ int main(void)
     SPDR='z';
     ADMUX=((0<<REFS1)|(1<<REFS0)|(0b00000000));
     ADCSRA=((1<<ADEN)|(0b00000111));
+    wdt_enable(WDTO_1S);
     char i;
 
     while(1)
     {
-        if (UCSRA & (1<<RXC))
-        {
-            i=UDR;
-            UDR=i;
-            uart_cek();
-        };
+        wdt_reset();
         if (SPSR & (1<<SPIF))
         {
             i=SPDR;
@@ -52,7 +49,6 @@ int main(void)
                 spi_prijem();
                 i=SPDR;
                 OCR0=i;
-                UDR=i;
             };
             if(i==0x41)
             {
