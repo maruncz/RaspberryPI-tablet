@@ -12,11 +12,37 @@ void spi_prijem(void)
     do{}
     while (!(SPSR & (1<<SPIF)));
 }
-void adc_mereni(void)
+char * adc_mereni(char channel)
 {
+    static char vysledek[2];
     ADCSRA=(ADCSRA|(1<<ADSC));
     do{}
     while(!(ADCSRA&(1<<ADSC)));
+    vysledek[0] = ADCL;
+    vysledek[1] = ADCH;
+    return vysledek;
+}
+
+void adc_posli(char *vysledek)
+{
+    char i;
+    char j=1;
+    SPDR=(vysledek+j)+168;
+    spi_prijem();
+    i=SPDR;
+    UDR=5;
+    uart_cek();
+    SPDR=vysledek;
+    spi_prijem();
+    i=SPDR;
+    UDR=6;
+    uart_cek();
+    i=(ADCH+168)^ADCL;
+    SPDR=i;
+    UDR=7;
+    uart_cek();
+    spi_prijem();
+    i=SPDR;
 }
 
 int main(void)
@@ -32,7 +58,6 @@ int main(void)
     TCCR0=0b01101001;
     OCR0=128;
     SPCR=(1<<SPE);
-    SPDR='z';
     ADMUX=((0<<REFS1)|(1<<REFS0)|(0b00000000));
     ADCSRA=((1<<ADEN)|(0b00000111));
     wdt_enable(WDTO_1S);
@@ -40,30 +65,37 @@ int main(void)
 
     while(1)
     {
+        if(UCSRA & (1<<RXC))
+        {
+            i=UDR;
+            UDR=i;
+            uart_cek();
+        }
         wdt_reset();
         if (SPSR & (1<<SPIF))
         {
             i=SPDR;
-            if(i==0x40)
+            UDR=i;
+            uart_cek();
+            switch(i)
             {
+            case 0x40:
                 spi_prijem();
                 i=SPDR;
                 OCR0=i;
-            };
-            if(i==0x41)
-            {
-                i=SPDR;
-                adc_mereni();
-                SPDR=ADCH+168;
-                spi_prijem();
-                i=SPDR;
-                SPDR=ADCL;
-                spi_prijem();
-                i=SPDR;
-                i=(ADCH+168)^ADCL;
-                SPDR=i;
-                spi_prijem();
-                i=SPDR;
+                UDR=2;
+                UDR=i;
+                break;
+            case 0x41:
+                adc_posli(adc_mereni(0));
+                UDR=3;
+                uart_cek();
+                break;
+            case 0x42:
+                adc_posli(adc_mereni(1));
+                UDR=4;
+                uart_cek();
+                break;
             };
         };
 
