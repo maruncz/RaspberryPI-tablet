@@ -28,7 +28,7 @@ public:
     
     void pwm(int value);
     qreal adc(int channel);
-    static void interrupt2();
+    static void interrupt();
 
 private slots:
 
