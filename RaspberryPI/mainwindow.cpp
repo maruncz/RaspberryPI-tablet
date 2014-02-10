@@ -154,7 +154,19 @@ void MainWindow::rpi::pwm(int value)
 
 qreal MainWindow::rpi::adc(int channel)
 {
-    unsigned char i=0x41;
+    unsigned char i;
+    switch(channel)
+    {
+    case 0:
+        i=0x41;
+        break;
+    case 1:
+        i=0x42;
+        break;
+    default:
+        return -1;
+        break;
+    }
     unsigned char v1=0,v2=0,x=0,j=0;
     int v;
     qreal volty;
