@@ -26,8 +26,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
-    void pwm(int value);
-    qreal adc(int channel);
     static void interrupt();
 
 private slots:
@@ -48,7 +46,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-
     int q;
     QSystemTrayIcon trayicon;
     QMenu traymenu;
@@ -68,6 +65,17 @@ private:
         qreal get_gpu_temp();
         QByteArray from_vcdencmd(QStringList args);
     };
+
+    class rpi
+    {
+        QProcess gpio;
+    public:
+        int set_up();
+        void pwm(int value);
+        qreal adc(int channel);
+    };
+
+    rpi gpio;
 
     hwinfo hw;
 };

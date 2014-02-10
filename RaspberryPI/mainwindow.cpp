@@ -6,30 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    q=false;
-    int f;
-    f=wiringPiSPISetup(0,61000);
-    if(f<0)
-    {
-        QMessageBox::critical(this,"ERROR","Could not initialize SPI");
-        q=2;
-        close();
-    }
-    f=wiringPiSetupSys();
-    if(f<0)
-    {
-        QMessageBox::critical(this,"ERROR","Could not initialize GPIO");
-        q=2;
-        close();
-    }
-    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
-    if(f<0)
-    {
-        QMessageBox::critical(this,"ERROR","Could not initialize GPIO");
-        q=2;
-        close();
-    }
-
+    q=0;
     rpiicon.addFile(":/icons/rpi",QSize(64,64),QIcon::Normal,QIcon::Off);
     quiticon.addFile(":/icons/quit",QSize(64,64),QIcon::Normal,QIcon::Off);
     trayicon.setIcon(rpiicon);
@@ -47,6 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
         timer.start();
     }
     hw.set_up();
+    q=gpio.set_up();
+    if(q>0)
+    {
+        close();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -57,7 +39,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionQuit_triggered()
 {
-    q=true;
+    q=1;
     close();
 }
 
@@ -77,7 +59,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
             break;
         case QMessageBox::No:
             event->ignore();
-            q=false;
+            q=0;
             break;
         }
         break;
@@ -95,7 +77,7 @@ void MainWindow::on_trayicon_activated(QSystemTrayIcon::ActivationReason reason)
     {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
-        MainWindow::show();
+        show();
         break;
     default:
         break;
@@ -117,12 +99,50 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 
 void MainWindow::on_timer_timeout()
 {
-    ui->lcdNumber->display(adc(0));
+    ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_2->display(hw.get_cpu_temp());
     ui->lcdNumber_3->display(hw.get_gpu_temp());
 }
 
-void MainWindow::pwm(int value)
+int MainWindow::rpi::set_up()
+{
+    int f;
+    QString s;
+    f=wiringPiSPISetup(0,61000);
+    if(f<0)
+    {
+        QMessageBox::critical(0,"ERROR","Could not initialize SPI");
+        return 2;
+    }
+    f=wiringPiSetupSys();
+    if(f<0)
+    {
+        QMessageBox::critical(0,"ERROR","Could not initialize GPIO");
+        return 2;
+    }
+    gpio.setProgram("gpio");
+    gpio.setArguments(QStringList() << "edge" << "17" << "falling");
+    gpio.start();
+    gpio.waitForReadyRead(1000);
+    s=gpio.readAllStandardError();
+    if(s.size()>0)
+    {
+        QMessageBox::critical(0,"GPIO","Could not initialize GPIO: s");
+        gpio.terminate();
+        return 2;
+    }
+    gpio.waitForFinished(1000);
+    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
+    if(f<0)
+    {
+        QMessageBox::critical(0,"ERROR","Could not initialize interrupt");
+        return 2;
+    }
+    return 0;
+
+}
+
+void MainWindow::rpi::pwm(int value)
 {
     unsigned char i=0x40;
     char s;
@@ -132,7 +152,7 @@ void MainWindow::pwm(int value)
     s=wiringPiSPIDataRW(0,&i,1);
 }
 
-qreal MainWindow::adc(int channel)
+qreal MainWindow::rpi::adc(int channel)
 {
     unsigned char i=0x41;
     unsigned char v1=0,v2=0,x=0,j=0;
@@ -161,7 +181,7 @@ qreal MainWindow::adc(int channel)
 
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
-    pwm(value);
+    gpio.pwm(value);
     ui->pwm->setText(QString::number(value));
     ui->proc->setText(QString::number((qreal(value)/256)*100)+"%");
 }
