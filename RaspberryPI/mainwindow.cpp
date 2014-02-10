@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
         q=2;
         close();
     }
-    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt2);
+    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
     if(f<0)
     {
         QMessageBox::critical(this,"ERROR","Could not initialize GPIO");
@@ -166,9 +166,9 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
     ui->proc->setText(QString::number((qreal(value)/256)*100)+"%");
 }
 
-void MainWindow::interrupt2()
+void MainWindow::interrupt()
 {
-    QMessageBox::information(0,"interrupt","interrupt");
+
 }
 
 
@@ -224,10 +224,4 @@ QByteArray MainWindow::hwinfo::from_vcdencmd(QStringList args)
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();
-}
-
-
-void interrupt()
-{
-    MainWindow::interrupt2();
 }

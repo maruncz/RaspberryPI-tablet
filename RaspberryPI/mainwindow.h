@@ -72,6 +72,4 @@ private:
     hwinfo hw;
 };
 
-void interrupt();
-
 #endif // MAINWINDOW_H
