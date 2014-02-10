@@ -100,6 +100,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 void MainWindow::on_timer_timeout()
 {
     ui->lcdNumber->display(gpio.adc(0));
+    ui->lcdNumber_4->display(gpio.adc(1));
     ui->lcdNumber_2->display(hw.get_cpu_temp());
     ui->lcdNumber_3->display(hw.get_gpu_temp());
 }
