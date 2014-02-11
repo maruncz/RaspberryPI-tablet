@@ -24,17 +24,11 @@ void adc(char channel)
     SPDR=(vysledek[1])+168;
     spi_prijem();
     i=SPDR;
-    UDR=5;
-    uart_cek();
     SPDR=vysledek[0];
     spi_prijem();
     i=SPDR;
-    UDR=6;
-    uart_cek();
     i=(ADCH+168)^ADCL;
     SPDR=i;
-    UDR=7;
-    uart_cek();
     spi_prijem();
     i=SPDR;
 }
@@ -69,7 +63,6 @@ int main(void)
         if (SPSR & (1<<SPIF))
         {
             i=SPDR;
-            UDR=i;
             uart_cek();
             switch(i)
             {
@@ -77,18 +70,12 @@ int main(void)
                 spi_prijem();
                 i=SPDR;
                 OCR0=i;
-                UDR=2;
-                UDR=i;
                 break;
             case 0x41:
                 adc(0);
-                UDR=3;
-                uart_cek();
                 break;
             case 0x42:
                 adc(1);
-                UDR=4;
-                uart_cek();
                 break;
             };
         };
