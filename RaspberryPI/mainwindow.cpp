@@ -170,8 +170,8 @@ qreal MainWindow::rpi::adc(int channel)
     }
     unsigned char v1=0,v2=0,x=0,j=0;
     int v;
-    qreal volty;
     char s;
+    qreal volty;
     do
     {
         s=wiringPiSPIDataRW(0,&i,1);
