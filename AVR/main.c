@@ -15,7 +15,7 @@ void spi_prijem(void)
 void adc(char channel)
 {
     char i;
-    static char vysledek[2];
+    char vysledek[2];
     ADCSRA=(ADCSRA|(1<<ADSC));
     do{}
     while(!(ADCSRA&(1<<ADSC)));
@@ -63,7 +63,6 @@ int main(void)
         if (SPSR & (1<<SPIF))
         {
             i=SPDR;
-            uart_cek();
             switch(i)
             {
             case 0x40:
