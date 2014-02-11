@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 2.7.0, 2014-02-11T14:24:09. -->
+<!-- Written by QtCreator 2.7.0, 2014-02-11T15:34:32. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -213,7 +213,7 @@
        <value type="QString">/home/martin/rpi/rasp-pi-rootfs</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2014-02-11T14:23:03</value>
+       <value type="QDateTime">2014-02-11T15:11:06</value>
        <value type="QDateTime">2014-02-09T10:49:00</value>
       </valuelist>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>

@@ -175,22 +175,26 @@ qreal MainWindow::rpi::adc(int channel)
     do
     {
         s=wiringPiSPIDataRW(0,&i,1);
-        usleep(5000);
+        usleep(10000);
         s=wiringPiSPIDataRW(0,&v1,1);
-        usleep(5000);
+        usleep(10000);
         s=wiringPiSPIDataRW(0,&v2,1);
-        usleep(5000);
+        usleep(10000);
         s=wiringPiSPIDataRW(0,&x,1);
-        usleep(5000);
+        usleep(10000);
         j++;
     }
     while((x!=(v1^v2))&&(j<5));
     v=((v1-168)*256)+v2;
     volty=v;
     volty=volty*5/1024;
+    if((v>1023)||(v<0))
+    {
+        v=-1;
+        volty=-1;
+    }
     return volty;
 }
-
 
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
