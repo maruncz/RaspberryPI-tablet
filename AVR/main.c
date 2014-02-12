@@ -15,16 +15,13 @@ void spi_prijem(void)
 void adc(char channel)
 {
     char i;
-    char vysledek[2];
     ADCSRA=(ADCSRA|(1<<ADSC));
     do{}
     while(!(ADCSRA&(1<<ADSC)));
-    vysledek[0] = ADCL;
-    vysledek[1] = ADCH;
-    SPDR=(vysledek[1])+168;
+    SPDR=ADCH+168;
     spi_prijem();
     i=SPDR;
-    SPDR=vysledek[0];
+    SPDR=ADCL;
     spi_prijem();
     i=SPDR;
     i=(ADCH+168)^ADCL;
