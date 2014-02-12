@@ -2,6 +2,9 @@
 #include <avr/wdt.h>
 #include <util/delay.h>
 
+
+char i;
+
 void uart_cek(void)
 {
     do{}
@@ -14,7 +17,8 @@ void spi_prijem(void)
 }
 void adc(char channel)
 {
-    char i;
+    ADMUX=(ADMUX&(0b11100000));
+    ADMUX=ADMUX|channel;
     ADCSRA=(ADCSRA|(1<<ADSC));
     do{}
     while(!(ADCSRA&(1<<ADSC)));
@@ -46,7 +50,6 @@ int main(void)
     ADMUX=((0<<REFS1)|(1<<REFS0)|(0b00000000));
     ADCSRA=((1<<ADEN)|(0b00000111));
     wdt_enable(WDTO_1S);
-    char i;
 
     while(1)
     {
