@@ -175,13 +175,13 @@ qreal MainWindow::rpi::adc(int channel)
     do
     {
         s=wiringPiSPIDataRW(0,&i,1);
-        usleep(10000);
+        usleep(5000);
         s=wiringPiSPIDataRW(0,&v1,1);
-        usleep(10000);
+        usleep(5000);
         s=wiringPiSPIDataRW(0,&v2,1);
-        usleep(10000);
+        usleep(5000);
         s=wiringPiSPIDataRW(0,&x,1);
-        usleep(10000);
+        usleep(5000);
         j++;
     }
     while((x!=(v1^v2))&&(j<5));
