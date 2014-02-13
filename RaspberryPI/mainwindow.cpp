@@ -109,7 +109,7 @@ int MainWindow::rpi::set_up()
 {
     int f;
     QString s;
-    f=wiringPiSPISetup(0,61000);
+    f=wiringPiSPISetup(0,5000);
     if(f<0)
     {
         QMessageBox::critical(0,"ERROR","Could not initialize SPI");
@@ -128,7 +128,7 @@ int MainWindow::rpi::set_up()
     s=gpio.readAllStandardError();
     if(s.size()>0)
     {
-        QMessageBox::critical(0,"GPIO","Could not initialize GPIO: s");
+        QMessageBox::critical(0,"GPIO","Could not initialize GPIO");
         gpio.terminate();
         return 2;
     }
@@ -159,10 +159,10 @@ qreal MainWindow::rpi::adc(int channel)
     switch(channel)
     {
     case 0:
-        i=0x41;
+        channel=0x41;
         break;
     case 1:
-        i=0x42;
+        channel=0x42;
         break;
     default:
         return -1;
@@ -174,6 +174,7 @@ qreal MainWindow::rpi::adc(int channel)
     qreal volty;
     do
     {
+        i=channel;
         s=wiringPiSPIDataRW(0,&i,1);
         usleep(5000);
         s=wiringPiSPIDataRW(0,&v1,1);
@@ -184,7 +185,7 @@ qreal MainWindow::rpi::adc(int channel)
         usleep(5000);
         j++;
     }
-    while((x!=(v1^v2))&&(j<5));
+    while((x!=(v1^v2))&&(j<5)&&(v1<168));
     v=((v1-168)*256)+v2;
     volty=v;
     volty=volty*5/1024;
