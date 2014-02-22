@@ -42,10 +42,6 @@ private slots:
 
     void on_verticalSlider_valueChanged(int value);
 
-
-
-    void on_pushButton_clicked();
-
 private:
     Ui::MainWindow *ui;
     int q;
@@ -81,7 +77,4 @@ private:
 
     hwinfo hw;
 };
-
-    static qreal d[6];
-
 #endif // MAINWINDOW_H

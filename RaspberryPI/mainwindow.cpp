@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer.setSingleShot(false);
     if(ui->tabWidget->currentIndex()==1)
     {
-        //timer.start();
+        timer.start();
     }
     hw.set_up();
     q=gpio.set_up();
@@ -101,19 +101,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 void MainWindow::on_timer_timeout()
 {
     int i;
-    ui->listWidget->clear();
     ui->lcdNumber->display(gpio.adc(0));
-    ui->listWidget->addItem("0:");
-    for(i=0;i<6;i++)
-    {
-        ui->listWidget->addItem(QString::number(d[i]));
-    }
     ui->lcdNumber_4->display(gpio.adc(1));
-    ui->listWidget->addItem("1:");
-    for(i=0;i<6;i++)
-    {
-        ui->listWidget->addItem(QString::number(d[i]));
-    }
     ui->lcdNumber_2->display(hw.get_cpu_temp());
     ui->lcdNumber_3->display(hw.get_gpu_temp());
 }
@@ -188,26 +177,20 @@ qreal MainWindow::rpi::adc(int channel)
     do
     {
         i=channel;
-        d[0]=i;
         s=wiringPiSPIDataRW(0,&i,1);
         usleep(10000);
         s=wiringPiSPIDataRW(0,&v1,1);
-        d[1]=v1;
         usleep(10000);
         s=wiringPiSPIDataRW(0,&v2,1);
-        d[2]=v2;
         usleep(10000);
         s=wiringPiSPIDataRW(0,&x,1);
-        d[3]=x;
         usleep(10000);
         j++;
     }
     while((x!=(v1^v2))&&(j<5)&&(v1<168));
     v=((v1-168)*256)+v2;
-    d[4]=v;
     volty=v;
     volty=volty*5/1024;
-    d[5]=volty;
     if((v>1023)||(v<0))
     {
         v=-1;
@@ -281,9 +264,4 @@ QByteArray MainWindow::hwinfo::from_vcdencmd(QStringList args)
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    on_timer_timeout();
 }
