@@ -15,20 +15,23 @@ void spi_prijem(void)
     do{}
     while (!(SPSR & (1<<SPIF)));
 }
-void adc(char channel)
+void adc(uint8_t channel)
 {
-    ADMUX=(ADMUX&(0b11100000));
-    ADMUX=ADMUX|channel;
+    uint8_t a,b;
+    ADMUX=0b01000000|channel;
     ADCSRA=(ADCSRA|(1<<ADSC));
     do{}
-    while(!(ADCSRA&(1<<ADSC)));
-    SPDR=ADCH+168;
+    while(ADCSRA&(1<<ADSC));
+    b=ADCL;
+    a=ADCH;
+    a=a|168;
+    SPDR=a;
     spi_prijem();
     i=SPDR;
-    SPDR=ADCL;
+    SPDR=b;
     spi_prijem();
     i=SPDR;
-    i=(ADCH+168)^ADCL;
+    i=a^b;
     SPDR=i;
     spi_prijem();
     i=SPDR;
