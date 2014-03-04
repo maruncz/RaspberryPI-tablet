@@ -1,9 +1,10 @@
 #include <avr/io.h>
 #include <avr/wdt.h>
 #include <util/delay.h>
-
+#define F_CPU 14745600UL
 
 char i;
+char zap;
 
 void uart_cek(void)
 {
@@ -46,16 +47,46 @@ int main(void)
     UBRRL=0x19;
     DDRD=0b01000000;
     DDRB=0b01001000;
+    DDRC=0b00011100;
+    DDRA=0b01000010;
+    PORTC=0;
     PORTB=0b00000000;
-    TCCR0=0b01101001;
+    TCCR0=0b01101101;
     OCR0=128;
     SPCR=(1<<SPE);
     ADMUX=((0<<REFS1)|(1<<REFS0)|(0b00000000));
     ADCSRA=((1<<ADEN)|(0b00000111));
     wdt_enable(WDTO_1S);
+    zap=0;
 
     while(1)
     {
+        if((PINC&(1<<PIN2))&&(zap==0))
+        {
+            uint8_t i,j;
+            char b=0;
+            for(i=0;((i<50));i++)
+            {
+                j=i;
+                _delay_ms(10);
+                if(!(PINC&(1<<PIN2)))
+                {
+                    PORTA=PORTA|(1<<PORT6);
+                    b=1;
+                    i=200;
+
+                }
+            };
+
+            if(b==0)
+            {
+                zap=1;
+                PORTC=PORTC|(1<<PORT3);
+                PORTA=PORTA|(1<<PORT1);
+            };
+        };
+
+
         if(UCSRA & (1<<RXC))
         {
             i=UDR;
@@ -74,10 +105,10 @@ int main(void)
                 OCR0=i;
                 break;
             case 0x41:
-                adc(0);
+                adc(3);
                 break;
             case 0x42:
-                adc(1);
+                adc(4);
                 break;
             };
         };
