@@ -47,7 +47,7 @@ int main(void)
     UBRRL=0x19;
     DDRD=0b01000000;
     DDRB=0b01001000;
-    DDRC=0b00011100;
+    DDRC=0b00011100|(1<<PORT5);
     DDRA=0b01000010;
     PORTC=0;
     PORTB=0b00000000;
@@ -56,22 +56,27 @@ int main(void)
     SPCR=(1<<SPE);
     ADMUX=((0<<REFS1)|(1<<REFS0)|(0b00000000));
     ADCSRA=((1<<ADEN)|(0b00000111));
-    wdt_enable(WDTO_1S);
+    wdt_reset();
+    wdt_enable(WDTO_2S);
     zap=0;
+    PORTC=PORTC|((1<<PORT4)|(1<<PORT5));
 
     while(1)
     {
+        if(zap==0)
+        {
+            PORTC=PORTC&~(1<<PORT3);
+        };
+        wdt_reset();
         if((PINC&(1<<PIN2))&&(zap==0))
         {
-            uint8_t i,j;
+            uint8_t i;
             char b=0;
-            for(i=0;((i<50));i++)
+            for(i=0;(i<51);i++)
             {
-                j=i;
-                _delay_ms(10);
+                _delay_ms(18);
                 if(!(PINC&(1<<PIN2)))
                 {
-                    PORTA=PORTA|(1<<PORT6);
                     b=1;
                     i=200;
 
@@ -83,7 +88,14 @@ int main(void)
                 zap=1;
                 PORTC=PORTC|(1<<PORT3);
                 PORTA=PORTA|(1<<PORT1);
-            };
+                PORTA=PORTA&~(1<<PORT6);
+                PORTC=PORTC&~((1<<PORT4)|(1<<PORT5));
+            }
+            else
+            {
+                PORTA=PORTA|(1<<PORT6);
+                PORTA=PORTA&~(1<<PORT1);
+            }
         };
 
 
