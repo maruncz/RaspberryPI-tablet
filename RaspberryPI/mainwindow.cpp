@@ -189,7 +189,7 @@ qreal MainWindow::rpi::adc(int channel)
     while((x!=(v1^v2))&&(j<5)&&(v1<168));
     v=((v1-168)*256)+v2;
     volty=v;
-    volty=volty*5/1024;
+    volty=2*volty*4.096/1024;
     if((v>1023)||(v<0))
     {
         v=-1;
