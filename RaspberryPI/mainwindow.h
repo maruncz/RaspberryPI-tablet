@@ -42,15 +42,17 @@ private slots:
 
     void on_verticalSlider_valueChanged(int value);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-    int q;
     QSystemTrayIcon trayicon;
     QMenu traymenu;
     QIcon rpiicon;
     QIcon quiticon;
     QAction *quitaction;
     QTimer timer;
+    int q;
 
     class hwinfo
     {
@@ -71,6 +73,7 @@ private:
         int set_up();
         void pwm(int value);
         qreal adc(int channel);
+        void vypni();
     };
 
     rpi gpio;

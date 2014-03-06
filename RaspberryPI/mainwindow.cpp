@@ -56,6 +56,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         switch(QMessageBox::question(this,"Quit?","Do you really want to quit?",QMessageBox::Yes,QMessageBox::No))
         {
         case QMessageBox::Yes:
+            gpio.vypni();
             event->accept();
             break;
         case QMessageBox::No:
@@ -65,6 +66,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
         break;
     case 2:
+        gpio.vypni();
         event->accept();
         break;
 
@@ -198,12 +200,20 @@ qreal MainWindow::rpi::adc(int channel)
     return volty;
 }
 
+void MainWindow::rpi::vypni()
+{
+    char s;
+    unsigned char i=0x43;
+    s=wiringPiSPIDataRW(0,&i,1);
+}
+
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     gpio.pwm(value);
     ui->pwm->setText(QString::number(value));
     ui->proc->setText(QString::number((qreal(value)/256)*100)+"%");
 }
+
 
 void MainWindow::interrupt()
 {
@@ -263,4 +273,9 @@ QByteArray MainWindow::hwinfo::from_vcdencmd(QStringList args)
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    gpio.vypni();
 }
