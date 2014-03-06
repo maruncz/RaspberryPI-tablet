@@ -38,17 +38,23 @@ void adc(uint8_t channel)
     i=SPDR;
 }
 
+void vypni(void)
+{
+    unsigned char i;
+    for(i=0;i<255;i++)
+    {
+        wdt_reset();
+        _delay_ms(60);
+    }
+    zap=0;
+}
+
 int main(void)
 {
-    UCSRA=0b00000000;
-    UCSRB=((1<<RXEN)|(1<<TXEN));
-    UCSRC=((1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0));
-    UBRRH=0x1;
-    UBRRL=0x19;
-    DDRD=0b01000000;
-    DDRB=0b01001000;
-    DDRC=0b00011100|(1<<PORT5);
-    DDRA=0b01000010;
+    DDRD=((1<<PORT2));
+    DDRB=((1<<PORT3)|(1<<PORT6));
+    DDRC=((1<<PORT5)|(1<<PORT4)|(1<<PORT3));
+    DDRA=0;
     PORTC=0;
     PORTB=0b00000000;
     TCCR0=0b01101101;
@@ -66,6 +72,8 @@ int main(void)
         if(zap==0)
         {
             PORTC=PORTC&~(1<<PORT3);
+            PORTC=PORTC|((1<<PORT4)|(1<<PORT5));
+            PORTA=PORTA&~(1<<PORT1);
         };
         wdt_reset();
         if((PINC&(1<<PIN2))&&(zap==0))
@@ -97,14 +105,6 @@ int main(void)
                 PORTA=PORTA&~(1<<PORT1);
             }
         };
-
-
-        if(UCSRA & (1<<RXC))
-        {
-            i=UDR;
-            UDR=i;
-            uart_cek();
-        }
         wdt_reset();
         if (SPSR & (1<<SPIF))
         {
@@ -121,6 +121,9 @@ int main(void)
                 break;
             case 0x42:
                 adc(4);
+                break;
+            case 0x43:
+                vypni();
                 break;
             };
         };
