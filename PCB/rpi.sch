@@ -9707,7 +9707,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <smd name="D3" x="0.635" y="3" dx="1.27" dy="0.6" layer="1" rot="R90"/>
 <smd name="D2" x="-0.635" y="3" dx="1.27" dy="0.6" layer="1" rot="R90"/>
 <smd name="D" x="-1.905" y="3" dx="1.27" dy="0.6" layer="1" rot="R90"/>
-<text x="-2.54" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-1.27" size="1.27" layer="25">&gt;NAME</text>
 </package>
 <package name="DPAK">
 <wire x1="-3.365" y1="3.11" x2="3.365" y2="3.11" width="0.127" layer="21"/>
@@ -9735,7 +9735,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <wire x1="3.3" y1="-3.3" x2="-3.3" y2="-3.3" width="0.127" layer="21"/>
 <smd name="+" x="0" y="2.6" dx="2.4" dy="0.8" layer="1" rot="R90"/>
 <smd name="-" x="0" y="-2.6" dx="2.4" dy="0.8" layer="1" rot="R90"/>
-<text x="-3.81" y="-2.54" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="-1.27" y="-2.54" size="1.27" layer="25" rot="R90">&gt;NAME</text>
 </package>
 <package name="HC49-SMD">
 <wire x1="-6" y1="2.4" x2="-6" y2="-2.4" width="0.127" layer="21"/>
@@ -9922,8 +9922,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <text x="-5.08" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="KRYSTAL">
-<pin name="P$1" x="0" y="7.62" visible="pad" length="middle" rot="R270"/>
-<pin name="P$2" x="0" y="-5.08" visible="pad" length="middle" rot="R90"/>
+<pin name="P$1" x="0" y="7.62" visible="off" length="middle" rot="R270"/>
+<pin name="P$2" x="0" y="-5.08" visible="off" length="middle" rot="R90"/>
 <wire x1="-2.54" y1="2.54" x2="2.54" y2="2.54" width="0.254" layer="94"/>
 <wire x1="-2.54" y1="1.905" x2="-2.54" y2="0.635" width="0.254" layer="94"/>
 <wire x1="-2.54" y1="0.635" x2="2.54" y2="0.635" width="0.254" layer="94"/>
@@ -13248,9 +13248,8 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="198.12" y1="203.2" x2="200.66" y2="203.2" width="0.1524" layer="91"/>
 <pinref part="U$8" gate="G$1" pin="SELI"/>
 <wire x1="200.66" y1="195.58" x2="198.12" y2="195.58" width="0.1524" layer="91"/>
-<wire x1="198.12" y1="195.58" x2="198.12" y2="198.12" width="0.1524" layer="91"/>
 <junction x="198.12" y="203.2"/>
-<wire x1="198.12" y1="198.12" x2="198.12" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="195.58" x2="198.12" y2="200.66" width="0.1524" layer="91"/>
 <wire x1="198.12" y1="200.66" x2="198.12" y2="203.2" width="0.1524" layer="91"/>
 <wire x1="198.12" y1="203.2" x2="198.12" y2="220.98" width="0.1524" layer="91"/>
 <wire x1="198.12" y1="220.98" x2="198.12" y2="240.03" width="0.1524" layer="91"/>
@@ -13279,9 +13278,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <junction x="365.76" y="213.36"/>
 <pinref part="U$11" gate="G$1" pin="S"/>
 <wire x1="373.38" y1="200.66" x2="365.76" y2="200.66" width="0.1524" layer="91"/>
-<pinref part="U$8" gate="G$1" pin="EN"/>
-<wire x1="200.66" y1="198.12" x2="198.12" y2="198.12" width="0.1524" layer="91"/>
-<junction x="198.12" y="198.12"/>
 <pinref part="U$1" gate="G$1" pin="DRV"/>
 <pinref part="C3" gate="G$1" pin="1"/>
 <wire x1="294.64" y1="200.66" x2="304.8" y2="200.66" width="0.1524" layer="91"/>
@@ -13738,8 +13734,14 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="147.32" y1="220.98" x2="170.18" y2="220.98" width="0.1524" layer="91"/>
 <pinref part="R13" gate="G$1" pin="1"/>
 <wire x1="170.18" y1="220.98" x2="175.26" y2="220.98" width="0.1524" layer="91"/>
-<wire x1="170.18" y1="198.12" x2="170.18" y2="220.98" width="0.1524" layer="91"/>
+<wire x1="170.18" y1="198.12" x2="170.18" y2="208.28" width="0.1524" layer="91"/>
 <junction x="170.18" y="220.98"/>
+<pinref part="U$8" gate="G$1" pin="EN"/>
+<wire x1="170.18" y1="208.28" x2="170.18" y2="220.98" width="0.1524" layer="91"/>
+<wire x1="200.66" y1="198.12" x2="175.26" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="175.26" y1="198.12" x2="175.26" y2="208.28" width="0.1524" layer="91"/>
+<wire x1="175.26" y1="208.28" x2="170.18" y2="208.28" width="0.1524" layer="91"/>
+<junction x="170.18" y="208.28"/>
 </segment>
 </net>
 <net name="N$19" class="0">
