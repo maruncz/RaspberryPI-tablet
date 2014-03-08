@@ -36,13 +36,9 @@ private slots:
 
     void on_trayicon_activated(QSystemTrayIcon::ActivationReason reason);
 
-    void on_tabWidget_currentChanged(int index);
-
     void on_timer_timeout();
 
     void on_verticalSlider_valueChanged(int value);
-
-    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -73,7 +69,6 @@ private:
         int set_up();
         void pwm(int value);
         qreal adc(int channel);
-        void vypni();
     };
 
     rpi gpio;

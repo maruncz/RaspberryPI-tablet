@@ -19,10 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     trayicon.show();
     timer.setInterval(1000);
     timer.setSingleShot(false);
-    if(ui->tabWidget->currentIndex()==1)
-    {
-        timer.start();
-    }
+    timer.start();
     hw.set_up();
     q=gpio.set_up();
     if(q>0)
@@ -48,6 +45,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     switch(q)
     {
     case 0:
+        timer.stop();
         hide();
         trayicon.showMessage("Minimized to tray","Minimized to tray", QSystemTrayIcon::Information,3000);
         event->ignore();
@@ -56,7 +54,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         switch(QMessageBox::question(this,"Quit?","Do you really want to quit?",QMessageBox::Yes,QMessageBox::No))
         {
         case QMessageBox::Yes:
-            gpio.vypni();
             event->accept();
             break;
         case QMessageBox::No:
@@ -66,7 +63,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
         break;
     case 2:
-        gpio.vypni();
         event->accept();
         break;
 
@@ -81,22 +77,10 @@ void MainWindow::on_trayicon_activated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
         show();
+        timer.start();
         break;
     default:
         break;
-    }
-}
-
-
-void MainWindow::on_tabWidget_currentChanged(int index)
-{
-    if(index==1)
-    {
-        timer.start();
-    }
-    else
-    {
-        timer.stop();
     }
 }
 
@@ -200,13 +184,6 @@ qreal MainWindow::rpi::adc(int channel)
     return volty;
 }
 
-void MainWindow::rpi::vypni()
-{
-    char s;
-    unsigned char i=0x43;
-    s=wiringPiSPIDataRW(0,&i,1);
-}
-
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     gpio.pwm(value);
@@ -273,9 +250,4 @@ QByteArray MainWindow::hwinfo::from_vcdencmd(QStringList args)
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    gpio.vypni();
 }
