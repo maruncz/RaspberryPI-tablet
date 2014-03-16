@@ -54,7 +54,7 @@ int main(void)
     DDRD=((1<<PORT2));
     DDRB=((1<<PORT3)|(1<<PORT6));
     DDRC=((1<<PORT5)|(1<<PORT4)|(1<<PORT3));
-    DDRA=((1<<PORT1)|(1<<PORT6));
+    DDRA=((1<<PORT1)|(1<<PORT6 ));
     PORTC=0;
     PORTB=0b00000000;
     TCCR0=0b01101101;
