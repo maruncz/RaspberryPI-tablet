@@ -10,9 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = RaspberryPI
 TEMPLATE = app
+target.path = /home/pi/c/qt/raspberrypi
 INSTALLS += target
-target.path=/home/pi/c/qt/raspberrypi
-
 
 SOURCES += main.cpp\
         mainwindow.cpp
