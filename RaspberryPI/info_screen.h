@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "hwinfo.h"
 #include "rpi.h"
+#include <QString>
 
 namespace Ui {
 class info_screen;

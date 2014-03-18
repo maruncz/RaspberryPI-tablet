@@ -23,9 +23,8 @@ qreal hwinfo::out_to_qreal(QByteArray in)
 
 qreal hwinfo::get_gpu_temp()
 {
-    QStringList in;
+    QString in="measure_temp";
     QByteArray out;
-    in << "measure_temp";
     out = from_vcdencmd(in);
     return out_to_qreal(out);
 }
@@ -40,9 +39,11 @@ QString hwinfo::from_uname(QString arg)
     return vcgencmd.readAllStandardOutput();
 }
 
-QByteArray hwinfo::from_vcdencmd(QStringList args)
+QByteArray hwinfo::from_vcdencmd(QString args)
 {
-    vcgencmd.setArguments(args);
+    QStringList in;
+    in << args;
+    vcgencmd.setArguments(in);
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();

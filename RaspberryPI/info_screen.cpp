@@ -6,12 +6,16 @@ info_screen::info_screen(QWidget *parent) :
     ui(new Ui::info_screen)
 {
     ui->setupUi(this);
+    QString s;
     ui->tableWidget->setItem(0,0,new QTableWidgetItem("Teplota"));
-    ui->tableWidget->setItem(0,1,new QTableWidgetItem(hw.from_vcdencmd(hw.vcgencmd_args.temp)));
+    s=hw.get_gpu_temp();
+    ui->tableWidget->setItem(0,1,new QTableWidgetItem(s));
     ui->tableWidget->setItem(1,0,new QTableWidgetItem("Paměť CPU"));
-    ui->tableWidget->setItem(1,1,new QTableWidgetItem(hw.from_vcdencmd(hw.vcgencmd_args.mem_arm)));
+    s=hw.from_vcdencmd(hw.mem_arm);
+    ui->tableWidget->setItem(1,1,new QTableWidgetItem(s));
     ui->tableWidget->setItem(2,0,new QTableWidgetItem("Paměť GPU"));
-    ui->tableWidget->setItem(2,1,new QTableWidgetItem(hw.from_vcdencmd(hw.vcgencmd_args.mem_gpu)));
+    s=hw.from_vcdencmd(hw.mem_gpu);
+    ui->tableWidget->setItem(2,1,new QTableWidgetItem(s));
 }
 
 info_screen::~info_screen()
