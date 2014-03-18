@@ -42,11 +42,18 @@ qreal hwinfo::get_gpu_mem()
 QString hwinfo::from_uname(QString arg)
 {
     QStringList in;
+    QByteArray out;
+    out.clear();
     in << arg;
     uname.setArguments(in);
     uname.start();
-    uname.waitForReadyRead(1000);
-    return vcgencmd.readAllStandardOutput();
+    do
+    {
+        uname.waitForReadyRead(1000);
+        out.append(uname.readAllStandardOutput());
+    }
+    while(!uname.atEnd());
+    return out;
 }
 
 QByteArray hwinfo::from_vcdencmd(QString args)
