@@ -15,10 +15,14 @@ INSTALLS += target
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    info_screen.cpp
+    info_screen.cpp \
+    hwinfo.cpp \
+    rpi.cpp
 
 HEADERS  += mainwindow.h \
-    info_screen.h
+    info_screen.h \
+    hwinfo.h \
+    rpi.h
 
 FORMS    += mainwindow.ui \
     info_screen.ui

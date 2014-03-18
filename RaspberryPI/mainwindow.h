@@ -2,9 +2,10 @@
 #define MAINWINDOW_H
 
 #include "info_screen.h"
+#include "hwinfo.h"
+#include "rpi.h"
 #include <QMainWindow>
-#include <wiringPiSPI.h>
-#include <wiringPi.h>
+
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QMessageBox>
@@ -52,7 +53,7 @@ private:
     QTimer timer;
     int q;
 
-    class hwinfo
+/*    class hwinfo
     {
         QProcess vcgencmd;
         QProcess uname;
@@ -62,16 +63,16 @@ private:
         qreal get_gpu_temp();
         QString from_uname(QString arg);
         QByteArray from_vcdencmd(QStringList args);
-    };
+    };*/
 
-    class rpi
+/*    class rpi
     {
         QProcess gpio;
     public:
         int set_up();
         void pwm(int value);
         qreal adc(int channel);
-    };
+    };*/
 
     rpi gpio;
 

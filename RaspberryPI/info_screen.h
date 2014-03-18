@@ -16,7 +16,7 @@ public:
     ~info_screen();
     
 private slots:
-    void on_pushButton_clicked();
+    void on_close_button_clicked();
 
 private:
     Ui::info_screen *ui;

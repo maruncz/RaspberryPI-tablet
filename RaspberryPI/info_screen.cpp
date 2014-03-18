@@ -6,6 +6,11 @@ info_screen::info_screen(QWidget *parent) :
     ui(new Ui::info_screen)
 {
     ui->setupUi(this);
+    int i,j;
+    for(i=0;i<8;i++)
+    {
+        ui->tableWidget->setItem(i,1,new QTableWidgetItem());
+    }
 }
 
 info_screen::~info_screen()
@@ -13,7 +18,7 @@ info_screen::~info_screen()
     delete ui;
 }
 
-void info_screen::on_pushButton_clicked()
+void info_screen::on_close_button_clicked()
 {
-    close();
+    info_screen::close();
 }
