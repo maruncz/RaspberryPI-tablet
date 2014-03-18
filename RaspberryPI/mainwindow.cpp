@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer.setSingleShot(false);
     timer.start();
     hw.set_up();
+    int i;
     q=gpio.set_up();
     if(q>0)
     {
@@ -88,7 +89,6 @@ void MainWindow::on_timer_timeout()
 {
     ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_4->display(gpio.adc(1));
-    ui->lcdNumber_2->display(hw.get_cpu_temp());
     ui->lcdNumber_3->display(hw.get_gpu_temp());
 }
 
@@ -184,13 +184,6 @@ qreal MainWindow::rpi::adc(int channel)
     return volty;
 }
 
-void MainWindow::on_verticalSlider_valueChanged(int value)
-{
-    gpio.pwm(value);
-    ui->pwm->setText(QString::number(value));
-    ui->proc->setText(QString::number((qreal(value)/256)*100)+"%");
-}
-
 
 void MainWindow::interrupt()
 {
@@ -200,8 +193,8 @@ void MainWindow::interrupt()
 
 void MainWindow::hwinfo::set_up()
 {
-    cpu_temp.setFileName("/sys/class/thermal/thermal_zone0/temp");
     vcgencmd.setProgram("vcgencmd");
+    uname.setProgram("uname");
 }
 
 qreal MainWindow::hwinfo::out_to_qreal(QByteArray in)
@@ -218,23 +211,6 @@ qreal MainWindow::hwinfo::out_to_qreal(QByteArray in)
     return out.toFloat();
 }
 
-qreal MainWindow::hwinfo::get_cpu_temp()
-{
-    QString tmp;
-    qreal temp;
-    if(cpu_temp.open(QIODevice::ReadOnly))
-    {
-        tmp=cpu_temp.readAll();
-        temp=tmp.toFloat()/1000;
-    }
-    else
-    {
-        temp=-1;
-    }
-    cpu_temp.close();
-    return temp;
-}
-
 qreal MainWindow::hwinfo::get_gpu_temp()
 {
     QStringList in;
@@ -244,10 +220,29 @@ qreal MainWindow::hwinfo::get_gpu_temp()
     return out_to_qreal(out);
 }
 
+
+QString MainWindow::hwinfo::from_uname(QString arg)
+{
+    QStringList in;
+    in << arg;
+    uname.setArguments(in);
+    uname.start();
+    uname.waitForReadyRead(1000);
+    return vcgencmd.readAllStandardOutput();
+}
+
 QByteArray MainWindow::hwinfo::from_vcdencmd(QStringList args)
 {
     vcgencmd.setArguments(args);
     vcgencmd.start();
     vcgencmd.waitForReadyRead(1000);
     return vcgencmd.readAllStandardOutput();
+}
+
+void MainWindow::on_actionInfo_triggered()
+{
+    info_screen *i = new info_screen(this);
+    i->show();
+    i->raise();
+    i->activateWindow();
 }

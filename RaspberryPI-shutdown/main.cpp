@@ -14,6 +14,7 @@ int main()
     }
     unsigned char i=0x43;
     wiringPiSPIDataRW(0,&i,1);
+    wiringPiSPIDataRW(0,&i,1);
     return 0;
 }
 

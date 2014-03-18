@@ -14,11 +14,14 @@ target.path = /home/pi/c/qt/raspberrypi
 INSTALLS += target
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    info_screen.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    info_screen.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    info_screen.ui
 
 RESOURCES += \
     RaspberryPI.qrc

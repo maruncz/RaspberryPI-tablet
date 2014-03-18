@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "info_screen.h"
 #include <QMainWindow>
 #include <wiringPiSPI.h>
 #include <wiringPi.h>
@@ -38,7 +39,8 @@ private slots:
 
     void on_timer_timeout();
 
-    void on_verticalSlider_valueChanged(int value);
+
+    void on_actionInfo_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -52,13 +54,13 @@ private:
 
     class hwinfo
     {
-        QFile cpu_temp;
         QProcess vcgencmd;
+        QProcess uname;
     public:
         void set_up();
         qreal out_to_qreal(QByteArray in);
-        qreal get_cpu_temp();
         qreal get_gpu_temp();
+        QString from_uname(QString arg);
         QByteArray from_vcdencmd(QStringList args);
     };
 
