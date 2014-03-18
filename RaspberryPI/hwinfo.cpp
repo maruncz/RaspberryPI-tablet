@@ -29,6 +29,16 @@ qreal hwinfo::get_gpu_temp()
     return out_to_qreal(out);
 }
 
+qreal hwinfo::get_cpu_mem()
+{
+    return out_to_qreal(from_vcdencmd(mem_arm));
+}
+
+qreal hwinfo::get_gpu_mem()
+{
+    return out_to_qreal(from_vcdencmd(mem_gpu));
+}
+
 QString hwinfo::from_uname(QString arg)
 {
     QStringList in;
@@ -42,9 +52,16 @@ QString hwinfo::from_uname(QString arg)
 QByteArray hwinfo::from_vcdencmd(QString args)
 {
     QStringList in;
+    QByteArray out;
+    out.clear();
     in << args;
     vcgencmd.setArguments(in);
     vcgencmd.start();
-    vcgencmd.waitForReadyRead(1000);
-    return vcgencmd.readAllStandardOutput();
+    do
+    {
+        vcgencmd.waitForReadyRead(1000);
+        out.append(vcgencmd.readAllStandardOutput());
+    }
+    while(!vcgencmd.atEnd());
+    return out;
 }

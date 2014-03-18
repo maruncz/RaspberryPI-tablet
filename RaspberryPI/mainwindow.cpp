@@ -98,6 +98,7 @@ void MainWindow::on_timer_timeout()
 void MainWindow::on_actionInfo_triggered()
 {
     info_screen *i = new info_screen(this);
+    timer.stop();
     i->show();
-
+    timer.start();
 }
