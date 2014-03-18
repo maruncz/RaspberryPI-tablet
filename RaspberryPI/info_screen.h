@@ -2,6 +2,8 @@
 #define INFO_SCREEN_H
 
 #include <QDialog>
+#include "hwinfo.h"
+#include "rpi.h"
 
 namespace Ui {
 class info_screen;
@@ -20,6 +22,8 @@ private slots:
 
 private:
     Ui::info_screen *ui;
+
+    hwinfo hw;
 };
 
 #endif // INFO_SCREEN_H
