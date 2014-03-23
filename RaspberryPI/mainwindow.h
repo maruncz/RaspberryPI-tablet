@@ -43,6 +43,8 @@ private slots:
 
     void on_actionInfo_triggered();
 
+    void on_verticalSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;
@@ -53,26 +55,6 @@ private:
     QTimer timer;
     int q;
 
-/*    class hwinfo
-    {
-        QProcess vcgencmd;
-        QProcess uname;
-    public:
-        void set_up();
-        qreal out_to_qreal(QByteArray in);
-        qreal get_gpu_temp();
-        QString from_uname(QString arg);
-        QByteArray from_vcdencmd(QStringList args);
-    };*/
-
-/*    class rpi
-    {
-        QProcess gpio;
-    public:
-        int set_up();
-        void pwm(int value);
-        qreal adc(int channel);
-    };*/
 
     rpi gpio;
 

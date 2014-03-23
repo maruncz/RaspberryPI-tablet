@@ -376,8 +376,8 @@ UsedLibrary="/home/martin/.eagle/lbr/elektro/eib-busch-jaeger.lbr"
 
 [Win_1]
 Type="Schematic Editor"
-Loc="660 24 1259 423"
-State=1
+Loc="65 24 664 423"
+State=2
 Number=2
 File="rpi.sch"
 View="1.83134 0.771116 430.959 244.799"
@@ -424,11 +424,11 @@ Sheet=1
 
 [Win_2]
 Type="Board Editor"
-Loc="66 52 992 1079"
-State=2
+Loc="189 161 1115 1187"
+State=1
 Number=1
 File="rpi.brd"
-View="34.2168 39.0565 60.3389 63.437"
+View="23.622 4.94196 68.761 47.0715"
 WireWidths=" 0 0.254 0.3048 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0.4064"
 PadDiameters=" 0.254 0.3048 0.4064 0.6096 0.8128 1.016 1.27 1.4224 1.6764 1.778 1.9304 2.1844 2.54 3.81 6.4516 0"
 PadDrills=" 0.5 0.6 0.7 0.9 1 1.1 1.2 1.3 1.4 1.5 1.6 2 2.2 2.8 3.2 0.8"

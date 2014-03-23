@@ -93,8 +93,6 @@ qreal rpi::adc(int channel)
     return volty;
 }
 
-
-
 void interrupt()
 {
 

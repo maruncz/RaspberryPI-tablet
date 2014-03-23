@@ -53,6 +53,7 @@ QString hwinfo::from_uname(QString arg)
         out.append(uname.readAllStandardOutput());
     }
     while(!uname.atEnd());
+    uname.waitForFinished(1000);
     return out;
 }
 
@@ -70,5 +71,6 @@ QByteArray hwinfo::from_vcdencmd(QString args)
         out.append(vcgencmd.readAllStandardOutput());
     }
     while(!vcgencmd.atEnd());
+    vcgencmd.waitForFinished(1000);
     return out;
 }

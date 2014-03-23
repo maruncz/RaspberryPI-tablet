@@ -102,3 +102,8 @@ void MainWindow::on_actionInfo_triggered()
     i->show();
     timer.start();
 }
+
+void MainWindow::on_verticalSlider_valueChanged(int value)
+{
+        gpio.pwm(value);
+}

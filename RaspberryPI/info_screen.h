@@ -24,7 +24,10 @@ private slots:
 private:
     Ui::info_screen *ui;
 
+    void addrow(QString label, QString value);
+
     hwinfo hw;
+    int rows;
 };
 
 #endif // INFO_SCREEN_H
