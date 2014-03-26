@@ -89,7 +89,7 @@ void MainWindow::on_timer_timeout()
 {
     ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_4->display(gpio.adc(1));
-    ui->lcdNumber_3->display(hw.get_gpu_temp());
+    ui->lcdNumber_3->display(hw.vcgencmd_qreal(hw.temp));
 }
 
 

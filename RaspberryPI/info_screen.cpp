@@ -8,8 +8,11 @@ info_screen::info_screen(QWidget *parent) :
     ui->setupUi(this);
     QString s;
     hw.set_up();
-    addrow("CPU memmory",QString::number(hw.get_cpu_mem()));
-    addrow("GPU memmory",QString::number(hw.get_gpu_mem()));
+    addrow("CPU memmory",hw.vcgencmd_qstring(hw.mem_arm));
+    addrow("GPU memmory",hw.vcgencmd_qstring(hw.mem_gpu));
+    addrow("CPU freq min",hw.vcgencmd_qstring(hw.arm_freq_min));
+    addrow("CPU freq max",hw.vcgencmd_qstring(hw.arm_freq));
+    addrow("overvoltage",hw.vcgencmd_qstring(hw.overvoltage));
 }
 
 info_screen::~info_screen()

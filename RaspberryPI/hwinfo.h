@@ -9,16 +9,20 @@ class hwinfo
 {
     QProcess vcgencmd;
     QProcess uname;
+
+public:
     const QString temp="measure_temp";
-    const QString get_conf="get_config int";
+    const QString arm_freq_min="get_config arm_freq_min";
+    const QString arm_freq="get_config arm_freq";
+    const QString overvoltage="get_config over_voltage";
     const QString mem_arm="get_mem arm";
     const QString mem_gpu="get_mem gpu";
-public:
+
     void set_up();
     qreal out_to_qreal(QByteArray in);
-    qreal get_gpu_temp();
-    qreal get_cpu_mem();
-    qreal get_gpu_mem();
+    qreal vcgencmd_qreal(QString args);
+    QString vcgencmd_qstring(QString args);
+
     QString from_uname(QString arg);
     QByteArray from_vcdencmd(QString args);
 };
