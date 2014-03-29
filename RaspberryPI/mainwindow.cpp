@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitaction, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
     connect(&trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(on_trayicon_activated(QSystemTrayIcon::ActivationReason)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
+    connect(&idle,SIGNAL(idled()),this,SLOT(on_idled()));
     trayicon.setContextMenu(&traymenu);
     trayicon.show();
     timer.setInterval(1000);
@@ -90,6 +91,7 @@ void MainWindow::on_timer_timeout()
     ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_4->display(gpio.adc(1));
     ui->lcdNumber_3->display(hw.vcgencmd_qreal(hw.temp));
+    //ui->label_3->setText(QString::number(idle.time));
 }
 
 
@@ -105,5 +107,10 @@ void MainWindow::on_actionInfo_triggered()
 
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
-        gpio.pwm(value);
+    gpio.pwm(value);
+}
+
+void MainWindow::on_idled()
+{
+    QMessageBox::information(this,"idled","idled");
 }

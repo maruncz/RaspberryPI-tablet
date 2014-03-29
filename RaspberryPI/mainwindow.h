@@ -4,6 +4,7 @@
 #include "info_screen.h"
 #include "hwinfo.h"
 #include "rpi.h"
+#include "idle_detect.h"
 #include <QMainWindow>
 
 #include <QMenu>
@@ -40,10 +41,11 @@ private slots:
 
     void on_timer_timeout();
 
-
     void on_actionInfo_triggered();
 
     void on_verticalSlider_valueChanged(int value);
+
+    void on_idled();
 
 private:
     Ui::MainWindow *ui;
@@ -54,7 +56,7 @@ private:
     QAction *quitaction;
     QTimer timer;
     int q;
-
+    idle_detect idle;
 
     rpi gpio;
 

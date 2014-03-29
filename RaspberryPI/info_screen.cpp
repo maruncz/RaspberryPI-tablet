@@ -12,7 +12,9 @@ info_screen::info_screen(QWidget *parent) :
     addrow("GPU memmory",hw.vcgencmd_qstring(hw.mem_gpu));
     addrow("CPU freq min",hw.vcgencmd_qstring(hw.arm_freq_min));
     addrow("CPU freq max",hw.vcgencmd_qstring(hw.arm_freq));
-    addrow("overvoltage",hw.vcgencmd_qstring(hw.overvoltage));
+    addrow("GPU freq min",hw.vcgencmd_qstring(hw.core_freq_min));
+    addrow("GPU freq max",hw.vcgencmd_qstring(hw.core_freq));
+    addrow("Overvoltage",hw.vcgencmd_qstring(hw.overvoltage));
 }
 
 info_screen::~info_screen()

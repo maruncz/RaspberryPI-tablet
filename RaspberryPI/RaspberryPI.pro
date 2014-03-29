@@ -17,12 +17,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     info_screen.cpp \
     hwinfo.cpp \
-    rpi.cpp
+    rpi.cpp \
+    idle_detect.cpp
 
 HEADERS  += mainwindow.h \
     info_screen.h \
     hwinfo.h \
-    rpi.h
+    rpi.h \
+    idle_detect.h
 
 FORMS    += mainwindow.ui \
     info_screen.ui

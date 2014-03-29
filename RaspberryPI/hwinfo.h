@@ -14,6 +14,8 @@ public:
     const QString temp="measure_temp";
     const QString arm_freq_min="get_config arm_freq_min";
     const QString arm_freq="get_config arm_freq";
+    const QString core_freq_min="get_config core_freq_min";
+    const QString core_freq="get_config core_freq";
     const QString overvoltage="get_config over_voltage";
     const QString mem_arm="get_mem arm";
     const QString mem_gpu="get_mem gpu";
