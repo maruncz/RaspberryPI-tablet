@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     q=0;
+    idle = new idle_detect;
     rpiicon.addFile(":/icons/rpi",QSize(64,64),QIcon::Normal,QIcon::Off);
     quiticon.addFile(":/icons/quit",QSize(64,64),QIcon::Normal,QIcon::Off);
     trayicon.setIcon(rpiicon);
@@ -15,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitaction, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
     connect(&trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(on_trayicon_activated(QSystemTrayIcon::ActivationReason)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
-    connect(&idle,SIGNAL(idled()),this,SLOT(on_idled()));
+    connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
     trayicon.setContextMenu(&traymenu);
     trayicon.show();
     timer.setInterval(1000);
@@ -91,7 +92,6 @@ void MainWindow::on_timer_timeout()
     ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_4->display(gpio.adc(1));
     ui->lcdNumber_3->display(hw.vcgencmd_qreal(hw.temp));
-    //ui->label_3->setText(QString::number(idle.time));
 }
 
 

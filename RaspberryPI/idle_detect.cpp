@@ -10,13 +10,17 @@ idle_detect::idle_detect(QObject *parent) :
     timer.start();
     threshold=60000;
     time=0;
+    s.clear();
 }
 
 void idle_detect::on_timer_timeout()
 {
+    bool ok;
+    s.clear();
     idle.start();
     idle.waitForReadyRead(1000);
-    time=idle.readAll().toLong();
+    s=idle.readAll();
+    time=s.toLong();
     if(time>threshold)
     {
         emit idled();

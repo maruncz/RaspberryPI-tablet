@@ -15,7 +15,8 @@ public:
     QTimer timer;
     long threshold;
     long time;
-    
+    QString s;
+
 signals:
     void idled();
     

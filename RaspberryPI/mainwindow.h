@@ -56,7 +56,7 @@ private:
     QAction *quitaction;
     QTimer timer;
     int q;
-    idle_detect idle;
+    idle_detect *idle;
 
     rpi gpio;
 
