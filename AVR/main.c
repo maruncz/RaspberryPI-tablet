@@ -49,6 +49,30 @@ void vypni(void)
     zap=0;
 }
 
+void rpi(char a)
+{
+    if(a!=0)
+    {
+        PORTC=PORTC&~(1<<PORT4);
+    }
+    else
+    {
+        PORTC=PORTC|(1<<PORT4);
+    }
+}
+
+void lcd(char a)
+{
+    if(a!=0)
+    {
+        PORTC=PORTC&~(1<<PORT5);
+    }
+    else
+    {
+        PORTC=PORTC|(1<<PORT5);
+    }
+}
+
 int main(void)
 {
     DDRD=((1<<PORT2));
@@ -72,10 +96,15 @@ int main(void)
         if(zap==0)
         {
             PORTC=PORTC&~(1<<PORT3);
-            PORTC=PORTC|((1<<PORT4)|(1<<PORT5));
+            rpi(0);
+            lcd(0);
             PORTA=PORTA&~(1<<PORT1);
         };
         wdt_reset();
+        if((PINC&(1<<PIN2))&&(zap==1))
+        {
+            lcd(1);
+        }
         if((PINC&(1<<PIN2))&&(zap==0))
         {
             uint8_t i;
@@ -97,7 +126,8 @@ int main(void)
                 PORTC=PORTC|(1<<PORT3);
                 PORTA=PORTA|(1<<PORT1);
                 PORTA=PORTA&~(1<<PORT6);
-                PORTC=PORTC&~((1<<PORT4)|(1<<PORT5));
+                rpi(1);
+                lcd(1);
             }
             else
             {
@@ -124,6 +154,9 @@ int main(void)
                 break;
             case 0x43:
                 vypni();
+                break;
+            case 0x44:
+                lcd(0);
                 break;
             };
         };
