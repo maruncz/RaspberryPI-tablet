@@ -93,6 +93,12 @@ qreal rpi::adc(int channel)
     return volty;
 }
 
+void rpi::lcd_off()
+{
+    unsigned char i=0x44;
+    wiringPiSPIDataRW(0,&i,1);
+}
+
 void interrupt()
 {
 

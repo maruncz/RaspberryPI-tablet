@@ -15,6 +15,7 @@ public:
     int set_up();
     void pwm(int value);
     qreal adc(int channel);
+    void lcd_off();
 
 };
 static void interrupt();
