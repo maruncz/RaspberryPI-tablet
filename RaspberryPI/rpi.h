@@ -17,6 +17,8 @@ public:
     qreal adc(int channel);
     void lcd_off();
 
+    int d1,d2;
+
 };
 static void interrupt();
 

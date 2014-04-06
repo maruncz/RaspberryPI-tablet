@@ -47,6 +47,8 @@ private slots:
 
     void on_idled();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;

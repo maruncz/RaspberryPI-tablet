@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     timer.setSingleShot(false);
     timer.start();
     hw.set_up();
-    int i;
     q=gpio.set_up();
     if(q>0)
     {
@@ -92,6 +91,7 @@ void MainWindow::on_timer_timeout()
     ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_4->display(gpio.adc(1));
     ui->lcdNumber_3->display(hw.vcgencmd_qreal(hw.temp));
+    ui->label_3->setText(QString::number(idle->time));
 }
 
 
@@ -112,5 +112,11 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
 
 void MainWindow::on_idled()
 {
-    QMessageBox::information(this,"idled","idled");
+    idle->lock();
+    gpio.lcd_off();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    gpio.lcd_off();
 }

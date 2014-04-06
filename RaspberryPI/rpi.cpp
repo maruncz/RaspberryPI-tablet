@@ -96,7 +96,8 @@ qreal rpi::adc(int channel)
 void rpi::lcd_off()
 {
     unsigned char i=0x44;
-    wiringPiSPIDataRW(0,&i,1);
+    d1=wiringPiSPIDataRW(0,&i,1);
+    d2=i;
 }
 
 void interrupt()
