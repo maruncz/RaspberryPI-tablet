@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         close();
     }
+    hide();
 }
 
 MainWindow::~MainWindow()
@@ -91,7 +92,6 @@ void MainWindow::on_timer_timeout()
     ui->lcdNumber->display(gpio.adc(0));
     ui->lcdNumber_4->display(gpio.adc(1));
     ui->lcdNumber_3->display(hw.vcgencmd_qreal(hw.temp));
-    ui->label_3->setText(QString::number(idle->time));
 }
 
 
@@ -113,10 +113,5 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
 void MainWindow::on_idled()
 {
     idle->lock();
-    gpio.lcd_off();
-}
-
-void MainWindow::on_pushButton_clicked()
-{
     gpio.lcd_off();
 }

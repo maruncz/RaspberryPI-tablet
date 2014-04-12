@@ -47,8 +47,6 @@ private slots:
 
     void on_idled();
 
-    void on_pushButton_clicked();
-
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;
@@ -63,5 +61,7 @@ private:
     rpi gpio;
 
     hwinfo hw;
+
+
 };
 #endif // MAINWINDOW_H
