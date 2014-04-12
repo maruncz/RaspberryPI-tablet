@@ -17,13 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(on_trayicon_activated(QSystemTrayIcon::ActivationReason)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
     connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
+    connect(&gpio,SIGNAL(lcd_off2()),this,SLOT(on_idled()));
     trayicon.setContextMenu(&traymenu);
     trayicon.show();
     timer.setInterval(1000);
     timer.setSingleShot(false);
     timer.start();
     hw.set_up();
-    q=gpio.set_up();
+    q=gpio.get_ret();
     if(q>0)
     {
         close();

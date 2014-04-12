@@ -1,6 +1,7 @@
 #ifndef RPI_H
 #define RPI_H
 
+#include <QObject>
 #include <QProcess>
 #include <wiringPiSPI.h>
 #include <wiringPi.h>
@@ -8,18 +9,33 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-class rpi
+class rpi : public QObject
 {
-    QProcess gpio;
+    Q_OBJECT
 public:
+    explicit rpi(QObject *parent = 0);
+
+
     int set_up();
     void pwm(int value);
     qreal adc(int channel);
     void lcd_off();
+    char get_ret();
+    int s;
 
-    char s;
+    static void interrupt();
+    
+signals:
+    void lcd_off2();
 
+public slots:
+
+private:
+    QProcess gpio;
+    char r;
+    
 };
-static void interrupt();
+
+
 
 #endif // RPI_H

@@ -1,8 +1,7 @@
 #include "rpi.h"
 
-
-
-int rpi::set_up()
+rpi::rpi(QObject *parent) :
+    QObject(parent)
 {
     int f;
     QString s;
@@ -10,13 +9,13 @@ int rpi::set_up()
     if(f<0)
     {
         QMessageBox::critical(0,"ERROR","Could not initialize SPI");
-        return 2;
+        r=2;
     }
     f=wiringPiSetupSys();
     if(f<0)
     {
         QMessageBox::critical(0,"ERROR","Could not initialize GPIO");
-        return 2;
+        r=2;
     }
     gpio.setProgram("gpio");
     gpio.setArguments(QStringList() << "edge" << "17" << "falling");
@@ -27,17 +26,18 @@ int rpi::set_up()
     {
         QMessageBox::critical(0,"GPIO","Could not initialize GPIO"+s);
         gpio.terminate();
-        return 2;
+        r=2;
     }
     gpio.waitForFinished(1000);
-    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
+    f=wiringPiISR(17,INT_EDGE_SETUP,rpi::interrupt);
     if(f<0)
     {
         QMessageBox::critical(0,"ERROR","Could not initialize interrupt");
-        return 2;
+        r=2;
     }
-    return 0;
+    r=0;
 }
+
 
 void rpi::pwm(int value)
 {
@@ -66,6 +66,7 @@ qreal rpi::adc(int channel)
     }
     unsigned char v1=0,v2=0,x=0,j=0;
     int v;
+    char s;
     qreal volty;
     do
     {
@@ -83,7 +84,7 @@ qreal rpi::adc(int channel)
     while((x!=(v1^v2))&&(j<5)&&(v1<168));
     v=((v1-168)*256)+v2;
     volty=v;
-    volty=2*volty*5/1024;
+    volty=2*volty*4.096/1024;
     if((v>1023)||(v<0))
     {
         v=-1;
@@ -98,6 +99,11 @@ void rpi::lcd_off()
     wiringPiSPIDataRW(0,&i,1);
 }
 
+char rpi::get_ret()
+{
+    return r;
+}
+
 void interrupt()
 {
     unsigned char i=0x44;
@@ -107,6 +113,7 @@ void interrupt()
     switch(i)
     {
     case 0x40:
-
+        emit lcd_off2();
+        break;
     }
 }
