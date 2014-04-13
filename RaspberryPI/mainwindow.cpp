@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(on_trayicon_activated(QSystemTrayIcon::ActivationReason)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
     connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
-    connect(&gpio,SIGNAL(lcd_off2()),this,SLOT(on_idled()));
+    connect(&gpio,SIGNAL(lcd_off3()),this,SLOT(on_idled()));
     trayicon.setContextMenu(&traymenu);
     trayicon.show();
     timer.setInterval(1000);
@@ -116,3 +116,6 @@ void MainWindow::on_idled()
     idle->lock();
     gpio.lcd_off();
 }
+
+
+

@@ -22,8 +22,7 @@ public:
     void lcd_off();
     char get_ret();
     int s;
-
-    static void interrupt();
+    void interrupt();
     
 signals:
     void lcd_off2();
@@ -36,6 +35,6 @@ private:
     
 };
 
-
+ //   static
 
 #endif // RPI_H
