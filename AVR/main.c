@@ -92,12 +92,14 @@ void lcd(uint8_t a)
     {
         PORTC=PORTC&~(1<<PORT5);
         lcd_en=1;
+        _delay_ms(50);
     }
     else
     {
         PORTC=PORTC|(1<<PORT5);
         lcd_en=0;
         lock();
+        _delay_ms(50);
     }
 }
 
@@ -135,6 +137,8 @@ int main(void)
         if((PINC&(1<<PIN2))&&(zap==1))
         {
             lcd(!lcd_en);
+            do{}
+            while(PINC&(1<<PIN2));
         }
         if((PINC&(1<<PIN2))&&(zap==0))
         {
@@ -176,6 +180,8 @@ int main(void)
                 PORTA=PORTA|(1<<PORT6);
                 PORTA=PORTA&~(1<<PORT1);
             }
+            do{}
+            while(PINC&(1<<PIN2));
         };
         wdt_reset();
         if (SPSR & (1<<SPIF))
