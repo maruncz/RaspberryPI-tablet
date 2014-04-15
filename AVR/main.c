@@ -3,14 +3,8 @@
 #include <util/delay.h>
 #define F_CPU 14745600UL
 
-uint8_t i;
+uint8_t i,inter;
 char zap,ac,batt,lcd_en;
-typedef enum
-{
-    lcd_off
-} interrupt;
-
-interrupt inter;
 
 
 void uart_cek(void)
@@ -82,9 +76,12 @@ void rpi(uint8_t a)
         PORTC=PORTC|(1<<PORT4);
     }
 }
-void lock(void)
+void interrupt(uint8_t i)
 {
+    inter=i;
     PORTD=PORTD|(1<<PORT2);
+    _delay_ms(1);
+    PORTD=PORTD&~(1<<PORT2);
 }
 void lcd(uint8_t a)
 {
@@ -98,7 +95,7 @@ void lcd(uint8_t a)
     {
         PORTC=PORTC|(1<<PORT5);
         lcd_en=0;
-        lock();
+        interrupt(1);
         _delay_ms(50);
     }
 }
@@ -111,6 +108,7 @@ int main(void)
     DDRA=((1<<PORT1)|(1<<PORT6 ));
     PORTC=0;
     PORTB=0b00000000;
+    PORTD=0;
     TCCR0=0b01101101;
     OCR0=128;
     SPCR=(1<<SPE);
@@ -211,13 +209,15 @@ int main(void)
             case 0x45:
                 switch(inter)
                 {
-                case lcd_off:
+                case 1:
                     SPDR=0x40;
                     spi_prijem();
-                }
                 break;
             default:
+                    SPDR=0x45;
+                    spi_prijem();
                 break;
+                }
             };
         };
 
