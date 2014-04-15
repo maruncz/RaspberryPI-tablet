@@ -1,5 +1,7 @@
 #include "rpi.h"
 
+
+
 rpi::rpi(QObject *parent) :
     QObject(parent)
 {
@@ -29,7 +31,7 @@ rpi::rpi(QObject *parent) :
         r=2;
     }
     gpio.waitForFinished(1000);
-    f=wiringPiISR(17,INT_EDGE_SETUP,rpi::interrupt);
+    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
     if(f<0)
     {
         QMessageBox::critical(0,"ERROR","Could not initialize interrupt");
@@ -99,12 +101,13 @@ void rpi::lcd_off()
     wiringPiSPIDataRW(0,&i,1);
 }
 
+
 char rpi::get_ret()
 {
     return r;
 }
 
-void interrupt()
+void rpi::interrupt2()
 {
     unsigned char i=0x44;
     wiringPiSPIDataRW(0,&i,1);
@@ -113,7 +116,17 @@ void interrupt()
     switch(i)
     {
     case 0x40:
-        emit lcd_off2();
+
+        break;
+    default:
+
         break;
     }
+}
+
+
+
+static void interrupt()
+{
+    rpi::interrupt2();
 }

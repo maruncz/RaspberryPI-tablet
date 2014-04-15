@@ -29,7 +29,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
-    static void interrupt();
 
 private slots:
 
@@ -63,5 +62,7 @@ private:
     hwinfo hw;
 
 
+
 };
+
 #endif // MAINWINDOW_H

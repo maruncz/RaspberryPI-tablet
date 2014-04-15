@@ -22,11 +22,7 @@ public:
     void lcd_off();
     char get_ret();
     int s;
-
-    static void interrupt();
-    
-signals:
-    void lcd_off2();
+    static void interrupt2();
 
 public slots:
 
@@ -36,6 +32,7 @@ private:
     
 };
 
+static void interrupt();
 
 
 #endif // RPI_H
