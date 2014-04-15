@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer.start();
     hw.set_up();
     q=gpio.get_ret();
+    //interrupt=interrupt2;
     if(q>0)
     {
         close();
@@ -117,5 +118,19 @@ void MainWindow::on_idled()
     gpio.lcd_off();
 }
 
+/*void MainWindow::interrupt3()
+{
+    QMessageBox::information(this,"interrupt","interrupt");
+}*/
 
+/*void MainWindow::interrupt2()
+{
+
+}*/
+
+
+void interrupt2()
+{
+
+}
 
