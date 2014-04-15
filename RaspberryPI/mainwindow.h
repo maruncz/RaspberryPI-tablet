@@ -60,14 +60,9 @@ private:
     rpi gpio;
 
     hwinfo hw;
-    //void (*interrupt4)();
 
 
 
 };
-
-    //typedef void (MainWindow::*interrupt3)();
-
-    //void interrupt2();
 
 #endif // MAINWINDOW_H
