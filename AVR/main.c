@@ -100,6 +100,27 @@ void lcd(uint8_t a)
     }
 }
 
+char test_nap(void)
+{
+    ac=(530<=mer(3));
+    batt=(300<=mer(4));
+    return (batt||ac);
+}
+
+void nap_vyber(void)
+{
+    if((!ac)&&(batt))
+    {
+        PORTC=PORTC|(1<<PORT3);
+        PORTA=PORTA|(1<<PORT6);
+    }
+    else
+    {
+        PORTC=PORTC&~(1<<PORT3);
+        PORTA=PORTA&~(1<<PORT6);
+    }
+}
+
 int main(void)
 {
     DDRD=((1<<PORT2));
@@ -142,32 +163,22 @@ int main(void)
         {
             uint8_t i;
             char b=0;
-            ac=(530<=mer(3));
-            batt=(300<=mer(4));
-            b=(batt||ac);
+            b=test_nap();
             for(i=0;((i<51)&&(b==1));i++)
             {
-                wdt_reset();
                 _delay_ms(18);
                 if(!(PINC&(1<<PIN2)))
                 {
                     b=0;
                     i=200;
-
+                    wdt_reset();
                 }
             };
 
             if(b==1)
             {
                 zap=1;
-                if((!ac)&&(batt))
-                {
-                    PORTC=PORTC|(1<<PORT3);
-                }
-                else
-                {
-                    PORTC=PORTC&~(1<<PORT3);
-                }
+                nap_vyber();
                 PORTA=PORTA|(1<<PORT1);
                 PORTA=PORTA&~(1<<PORT6);
                 rpi(1);
@@ -178,9 +189,10 @@ int main(void)
                 PORTA=PORTA|(1<<PORT6);
                 PORTA=PORTA&~(1<<PORT1);
             }
-            do{}
+            do{wdt_reset();}
             while(PINC&(1<<PIN2));
         };
+        nap_vyber();
         wdt_reset();
         if (SPSR & (1<<SPIF))
         {
