@@ -53,16 +53,38 @@ void adc(uint8_t channel)
     spi_prijem();
     i=SPDR;
 }
-
+void zel(char a)
+{
+    if(a==0)
+    {
+        PORTA=PORTA&~(1<<PORT1);
+    }
+    else
+    {
+        PORTA=PORTA|(1<<PORT1);
+    }
+}
+void cerv(char a)
+{
+    if(a==0)
+    {
+        PORTA=PORTA&~(1<<PORT6);
+    }
+    else
+    {
+        PORTA=PORTA|(1<<PORT6);
+    }
+}
 void vypni(void)
 {
+    zap=0;
+    cerv(1);
     unsigned char i;
     for(i=0;i<255;i++)
     {
         wdt_reset();
         _delay_ms(60);
     }
-    zap=0;
 }
 
 void rpi(uint8_t a)
@@ -90,6 +112,7 @@ void lcd(uint8_t a)
         PORTC=PORTC&~(1<<PORT5);
         lcd_en=1;
         _delay_ms(50);
+        cerv(0);
     }
     else
     {
@@ -97,6 +120,7 @@ void lcd(uint8_t a)
         lcd_en=0;
         interrupt(1);
         _delay_ms(50);
+        cerv(1);
     }
 }
 
@@ -112,12 +136,10 @@ void nap_vyber(void)
     if((!ac)&&(batt))
     {
         PORTC=PORTC|(1<<PORT3);
-        PORTA=PORTA|(1<<PORT6);
     }
     else
     {
         PORTC=PORTC&~(1<<PORT3);
-        PORTA=PORTA&~(1<<PORT6);
     }
 }
 
@@ -150,19 +172,20 @@ int main(void)
             PORTC=PORTC&~(1<<PORT3);
             rpi(0);
             lcd(0);
-            PORTA=PORTA&~(1<<PORT1);
+            cerv(0);
+            zel(0);
         };
         wdt_reset();
         if((PINC&(1<<PIN2))&&(zap==1))
         {
             lcd(!lcd_en);
-            do{}
+            do{wdt_reset();}
             while(PINC&(1<<PIN2));
         }
         if((PINC&(1<<PIN2))&&(zap==0))
         {
             uint8_t i;
-            char b=0;
+            char b;
             b=test_nap();
             for(i=0;((i<51)&&(b==1));i++)
             {
@@ -179,19 +202,20 @@ int main(void)
             {
                 zap=1;
                 nap_vyber();
-                PORTA=PORTA|(1<<PORT1);
-                PORTA=PORTA&~(1<<PORT6);
+                cerv(0);
+                zel(1);
                 rpi(1);
                 lcd(1);
             }
             else
             {
-                PORTA=PORTA|(1<<PORT6);
-                PORTA=PORTA&~(1<<PORT1);
+                zel(0);
+                cerv(1);
             }
             do{wdt_reset();}
             while(PINC&(1<<PIN2));
         };
+        test_nap();
         nap_vyber();
         wdt_reset();
         if (SPSR & (1<<SPIF))
@@ -214,8 +238,6 @@ int main(void)
                 vypni();
                 break;
             case 0x44:
-                PORTA=PORTA|(1<<PORT6);
-                PORTA=PORTA|(1<<PORT1);
                 lcd(0);
                 break;
             case 0x45:
