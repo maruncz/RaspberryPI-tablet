@@ -112,7 +112,6 @@ void lcd(uint8_t a)
         PORTC=PORTC&~(1<<PORT5);
         lcd_en=1;
         _delay_ms(50);
-        cerv(0);
     }
     else
     {
@@ -120,7 +119,6 @@ void lcd(uint8_t a)
         lcd_en=0;
         interrupt(1);
         _delay_ms(50);
-        cerv(1);
     }
 }
 
@@ -133,7 +131,7 @@ char test_nap(void)
 
 void nap_vyber(void)
 {
-    if((!ac)&&(batt))
+    if((!ac)&&(batt)&&(zap))
     {
         PORTC=PORTC|(1<<PORT3);
     }
@@ -175,7 +173,6 @@ int main(void)
             cerv(0);
             zel(0);
         };
-        wdt_reset();
         if((PINC&(1<<PIN2))&&(zap==1))
         {
             lcd(!lcd_en);
@@ -184,6 +181,7 @@ int main(void)
         }
         if((PINC&(1<<PIN2))&&(zap==0))
         {
+            cerv(1);
             uint8_t i;
             char b;
             b=test_nap();
@@ -202,7 +200,7 @@ int main(void)
             {
                 zap=1;
                 nap_vyber();
-                cerv(0);
+                cerv(1);
                 zel(1);
                 rpi(1);
                 lcd(1);
