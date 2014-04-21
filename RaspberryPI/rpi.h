@@ -22,7 +22,10 @@ public:
     void lcd_off();
     char get_ret();
     int s;
-    static void interrupt2();
+    void interrupt2();
+
+signals:
+    void lock();
 
 public slots:
 

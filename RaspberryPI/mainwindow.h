@@ -42,8 +42,6 @@ private slots:
 
     void on_actionInfo_triggered();
 
-    void on_verticalSlider_valueChanged(int value);
-
     void on_idled();
 
 private:

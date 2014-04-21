@@ -1,10 +1,11 @@
 #include "rpi.h"
 
-
+rpi* tu;
 
 rpi::rpi(QObject *parent) :
     QObject(parent)
 {
+    tu=this;
     int f;
     QString s;
     f=wiringPiSPISetup(0,50000);
@@ -20,7 +21,7 @@ rpi::rpi(QObject *parent) :
         r=2;
     }
     gpio.setProgram("gpio");
-    gpio.setArguments(QStringList() << "edge" << "17" << "falling");
+    gpio.setArguments(QStringList() << "edge" << "22" << "falling");
     gpio.start();
     gpio.waitForReadyRead(1000);
     s=gpio.readAllStandardError();
@@ -31,7 +32,7 @@ rpi::rpi(QObject *parent) :
         r=2;
     }
     gpio.waitForFinished(1000);
-    f=wiringPiISR(17,INT_EDGE_SETUP,interrupt);
+    f=wiringPiISR(22,INT_EDGE_SETUP,interrupt);
     if(f<0)
     {
         QMessageBox::critical(0,"ERROR","Could not initialize interrupt");
@@ -86,7 +87,7 @@ qreal rpi::adc(int channel)
     while((x!=(v1^v2))&&(j<5)&&(v1<168));
     v=((v1-168)*256)+v2;
     volty=v;
-    volty=2*volty*4.096/1024;
+    volty=2*volty*5/1024;
     if((v>1023)||(v<0))
     {
         v=-1;
@@ -109,17 +110,18 @@ char rpi::get_ret()
 
 void rpi::interrupt2()
 {
-    unsigned char i=0x44;
+    unsigned char j,i=0x45;
     wiringPiSPIDataRW(0,&i,1);
-    usleep(5000);
-    wiringPiSPIDataRW(0,&i,1);
-    switch(i)
+    usleep(100000);
+    wiringPiSPIDataRW(0,&j,1);
+    usleep(10000);
+    switch(j)
     {
     case 0x40:
-
+        emit tu->lock();
         break;
     default:
-
+        QMessageBox::information(0,"interrupt",QString::number(j,16));
         break;
     }
 }
@@ -128,5 +130,5 @@ void rpi::interrupt2()
 
 static void interrupt()
 {
-    rpi::interrupt2();
+    tu->interrupt2();
 }
