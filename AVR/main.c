@@ -111,14 +111,12 @@ void lcd(uint8_t a)
     {
         PORTC=PORTC&~(1<<PORT5);
         lcd_en=1;
-        _delay_ms(50);
     }
     else
     {
         PORTC=PORTC|(1<<PORT5);
         lcd_en=0;
         interrupt(1);
-        _delay_ms(50);
     }
 }
 
@@ -176,11 +174,13 @@ int main(void)
         if((PINC&(1<<PIN2))&&(zap==1))
         {
             lcd(!lcd_en);
+            _delay_ms(50);
             do{wdt_reset();}
             while(PINC&(1<<PIN2));
         }
         if((PINC&(1<<PIN2))&&(zap==0))
         {
+            wdt_reset();
             cerv(1);
             uint8_t i;
             char b;
@@ -188,11 +188,11 @@ int main(void)
             for(i=0;((i<51)&&(b==1));i++)
             {
                 _delay_ms(18);
+                wdt_reset();
                 if(!(PINC&(1<<PIN2)))
                 {
                     b=0;
                     i=200;
-                    wdt_reset();
                 }
             };
 
@@ -209,7 +209,7 @@ int main(void)
             {
                 zel(0);
                 cerv(1);
-            }
+            };
             do{wdt_reset();}
             while(PINC&(1<<PIN2));
         };
