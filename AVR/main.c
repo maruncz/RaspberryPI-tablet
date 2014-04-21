@@ -139,6 +139,21 @@ void nap_vyber(void)
     }
 }
 
+void interrupted()
+{
+    switch(inter)
+    {
+    case 1:
+        SPDR=0x40;
+        spi_prijem();
+        break;
+    default:
+        SPDR=0x99;
+        spi_prijem();
+        break;
+    };
+}
+
 int main(void)
 {
     DDRD=((1<<PORT2));
@@ -147,7 +162,7 @@ int main(void)
     DDRA=((1<<PORT1)|(1<<PORT6 ));
     PORTC=0;
     PORTB=0b00000000;
-    PORTD=0;
+    PORTD=((1<<PORT4));
     TCCR0=0b01101101;
     OCR0=128;
     SPCR=(1<<SPE);
@@ -239,17 +254,8 @@ int main(void)
                 lcd(0);
                 break;
             case 0x45:
-                switch(inter)
-                {
-                case 1:
-                    SPDR=0x40;
-                    spi_prijem();
+                interrupted();
                 break;
-            default:
-                    SPDR=0x45;
-                    spi_prijem();
-                break;
-                }
             };
         };
 
