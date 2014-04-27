@@ -45,11 +45,10 @@ rpi::rpi(QObject *parent) :
 void rpi::pwm(int value)
 {
     unsigned char i=0x40;
-    char s;
-    s=wiringPiSPIDataRW(0,&i,1);
+    wiringPiSPIDataRW(0,&i,1);
     usleep(5000);
     i=value;
-    s=wiringPiSPIDataRW(0,&i,1);
+    wiringPiSPIDataRW(0,&i,1);
 }
 
 qreal rpi::adc(int channel)
@@ -69,18 +68,17 @@ qreal rpi::adc(int channel)
     }
     unsigned char v1=0,v2=0,x=0,j=0;
     int v;
-    char s;
     qreal volty;
     do
     {
         i=channel;
-        s=wiringPiSPIDataRW(0,&i,1);
+        wiringPiSPIDataRW(0,&i,1);
         usleep(10000);
-        s=wiringPiSPIDataRW(0,&v1,1);
+        wiringPiSPIDataRW(0,&v1,1);
         usleep(10000);
-        s=wiringPiSPIDataRW(0,&v2,1);
+        wiringPiSPIDataRW(0,&v2,1);
         usleep(10000);
-        s=wiringPiSPIDataRW(0,&x,1);
+        wiringPiSPIDataRW(0,&x,1);
         usleep(10000);
         j++;
     }
@@ -110,18 +108,20 @@ char rpi::get_ret()
 
 void rpi::interrupt2()
 {
-    unsigned char j,i=0x45;
-    wiringPiSPIDataRW(0,&i,1);
-    usleep(100000);
-    wiringPiSPIDataRW(0,&j,1);
-    usleep(10000);
-    switch(j)
+    //unsigned char j,i=0x45;
+    d1=0x45;
+    wiringPiSPIDataRW(0,&d1,1);
+    usleep(500000);
+    wiringPiSPIDataRW(0,&d2,1);
+    switch(d2)
     {
     case 0x40:
-        emit tu->lock();
+        emit lock();
+        break;
+    case 0x41:
+        emit wake();
         break;
     default:
-        QMessageBox::information(0,"interrupt",QString::number(j,16));
         break;
     }
 }

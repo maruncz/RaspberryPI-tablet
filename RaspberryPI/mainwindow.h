@@ -44,6 +44,10 @@ private slots:
 
     void on_idled();
 
+    void on_lock();
+
+    void on_wake();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;
@@ -62,5 +66,6 @@ private:
 
 
 };
+
 
 #endif // MAINWINDOW_H

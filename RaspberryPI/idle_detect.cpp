@@ -5,6 +5,8 @@ idle_detect::idle_detect(QObject *parent) :
 {
     connect(&timer,SIGNAL(timeout()),this,SLOT(on_timer_timeout()));
     idle.setProgram("xprintidle");
+    waker.setProgram("xdotool");
+    waker.setArguments(QStringList("click 1"));
     locker.setProgram("gnome-screensaver-command");
     locker.setArguments(QStringList("-l"));
     timer.setInterval(1000);
@@ -19,6 +21,12 @@ void idle_detect::lock()
 {
     locker.start();
     locker.waitForFinished(1000);
+}
+
+void idle_detect::wake()
+{
+    waker.start();
+    waker.waitForFinished(1000);
 }
 
 void idle_detect::on_timer_timeout()

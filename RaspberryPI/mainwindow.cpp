@@ -16,8 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitaction, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
     connect(&trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(on_trayicon_activated(QSystemTrayIcon::ActivationReason)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
-    connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
-    connect(&gpio,SIGNAL(lock()),this,SLOT(on_idled()));
+    //connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
+    connect(&gpio,SIGNAL(lock()),this,SLOT(on_lock()));
+    connect(&gpio,SIGNAL(wake()),this,SLOT(on_wake()));
     trayicon.setContextMenu(&traymenu);
     trayicon.show();
     timer.setInterval(1000);
@@ -108,8 +109,18 @@ void MainWindow::on_actionInfo_triggered()
 
 void MainWindow::on_idled()
 {
-    /*idle->lock();
-    gpio.lcd_off();*/
-    QMessageBox::information(this,"lock","lock");
+    idle->lock();
+    gpio.lcd_off();
+    //ui->listWidget->addItem(new QListWidgetItem(QString::number(gpio.d1,16)+" "+QString::number(gpio.d2,16)));
 }
 
+void MainWindow::on_lock()
+{
+    idle->lock();
+    idle->wake();
+}
+
+void MainWindow::on_wake()
+{
+    //idle->wake();
+}

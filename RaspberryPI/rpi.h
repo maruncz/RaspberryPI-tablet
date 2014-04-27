@@ -21,11 +21,14 @@ public:
     qreal adc(int channel);
     void lcd_off();
     char get_ret();
-    int s;
     void interrupt2();
+
+    unsigned char d1,d2,d3,d4;
 
 signals:
     void lock();
+
+    void wake();
 
 public slots:
 

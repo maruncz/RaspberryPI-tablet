@@ -11,7 +11,7 @@ class idle_detect : public QObject
 public:
     explicit idle_detect(QObject *parent = 0);
 
-    QProcess idle,locker;
+    QProcess idle,locker,waker;
     QTimer timer;
     long threshold;
     long time;
@@ -19,8 +19,11 @@ public:
 
     void lock();
 
+    void wake();
+
 signals:
     void idled();
+
     
 public slots:
 
