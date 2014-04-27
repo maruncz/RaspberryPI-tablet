@@ -111,6 +111,7 @@ void lcd(uint8_t a)
     {
         PORTC=PORTC&~(1<<PORT5);
         lcd_en=1;
+        interrupt(2);
     }
     else
     {
@@ -139,17 +140,18 @@ void nap_vyber(void)
     }
 }
 
-void interrupted()
+uint8_t interrupted()
 {
     switch(inter)
     {
     case 1:
-        SPDR=0x40;
-        spi_prijem();
+        return 0x40;
+        break;
+    case 2:
+        return 0x41;
         break;
     default:
-        SPDR=0x99;
-        spi_prijem();
+        return 0x99;
         break;
     };
 }
@@ -174,6 +176,7 @@ int main(void)
     ac=0;
     batt=0;
     lcd_en=0;
+    inter=-1;
     PORTC=PORTC|((1<<PORT4)|(1<<PORT5));
 
     while(1)
@@ -254,7 +257,10 @@ int main(void)
                 lcd(0);
                 break;
             case 0x45:
-                interrupted();
+                SPDR=interrupted();
+                spi_prijem();
+                i=SPDR;
+                inter=-1;
                 break;
             };
         };
