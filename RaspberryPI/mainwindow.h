@@ -48,6 +48,10 @@ private slots:
 
     void on_wake();
 
+    void on_timer_on();
+
+    void on_timer_off();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;

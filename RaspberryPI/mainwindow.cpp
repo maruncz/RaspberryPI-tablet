@@ -23,14 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
     trayicon.show();
     timer.setInterval(1000);
     timer.setSingleShot(false);
-    timer.start();
     hw.set_up();
     q=gpio.get_ret();
     if(q>0)
     {
         close();
     }
-    hide();
 }
 
 MainWindow::~MainWindow()
@@ -72,7 +70,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
         break;
 
     }
-
 }
 
 void MainWindow::on_trayicon_activated(QSystemTrayIcon::ActivationReason reason)
@@ -111,7 +108,7 @@ void MainWindow::on_idled()
 {
     idle->lock();
     gpio.lcd_off();
-    //ui->listWidget->addItem(new QListWidgetItem(QString::number(gpio.d1,16)+" "+QString::number(gpio.d2,16)));
+
 }
 
 void MainWindow::on_lock()
@@ -122,5 +119,15 @@ void MainWindow::on_lock()
 
 void MainWindow::on_wake()
 {
-    //idle->wake();
+    idle->wake();
+}
+
+void MainWindow::on_timer_on()
+{
+    timer.start();
+}
+
+void MainWindow::on_timer_off()
+{
+    timer.stop();
 }

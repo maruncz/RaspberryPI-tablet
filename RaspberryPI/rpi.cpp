@@ -108,12 +108,14 @@ char rpi::get_ret()
 
 void rpi::interrupt2()
 {
-    //unsigned char j,i=0x45;
-    d1=0x45;
-    wiringPiSPIDataRW(0,&d1,1);
-    usleep(500000);
-    wiringPiSPIDataRW(0,&d2,1);
-    switch(d2)
+    emit timer_off();
+    usleep(100000);
+    unsigned char i;
+    i=0x45;
+    wiringPiSPIDataRW(0,&i,1);
+    usleep(400000);
+    wiringPiSPIDataRW(0,&i,1);
+    switch(i)
     {
     case 0x40:
         emit lock();
@@ -124,6 +126,7 @@ void rpi::interrupt2()
     default:
         break;
     }
+    emit timer_on();
 }
 
 

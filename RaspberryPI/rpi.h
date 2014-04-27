@@ -23,12 +23,15 @@ public:
     char get_ret();
     void interrupt2();
 
-    unsigned char d1,d2,d3,d4;
 
 signals:
     void lock();
 
     void wake();
+
+    void timer_on();
+
+    void timer_off();
 
 public slots:
 
