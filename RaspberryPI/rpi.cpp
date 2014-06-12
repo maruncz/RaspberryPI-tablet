@@ -123,6 +123,9 @@ void rpi::interrupt2()
     case 0x41:
         emit wake();
         break;
+    case 0x42:
+        emit shutdown();
+        break;
     default:
         break;
     }

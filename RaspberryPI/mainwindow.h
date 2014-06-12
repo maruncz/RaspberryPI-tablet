@@ -52,6 +52,8 @@ private slots:
 
     void on_timer_off();
 
+    void on_shutdown();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;
@@ -66,6 +68,8 @@ private:
     rpi gpio;
 
     hwinfo hw;
+
+    QProcess shutdown;
 
 
 

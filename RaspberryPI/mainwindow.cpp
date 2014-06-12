@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
     connect(&gpio,SIGNAL(lock()),this,SLOT(on_lock()));
     connect(&gpio,SIGNAL(wake()),this,SLOT(on_wake()));
+    connect(&gpio,SIGNAL(shutdown()),this,SLOT(on_shutdown()));
     trayicon.setContextMenu(&traymenu);
     trayicon.show();
     timer.setInterval(1000);
@@ -29,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         close();
     }
+    idle->wake();
+    shutdown.setProgram("sudo");;
+    shutdown.setArguments(QStringList("shutdown -h now"));
 }
 
 MainWindow::~MainWindow()
@@ -130,4 +134,10 @@ void MainWindow::on_timer_on()
 void MainWindow::on_timer_off()
 {
     timer.stop();
+}
+
+void MainWindow::on_shutdown()
+{
+    shutdown.start();
+    shutdown.waitForFinished(1000);
 }

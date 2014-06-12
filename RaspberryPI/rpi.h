@@ -33,6 +33,8 @@ signals:
 
     void timer_off();
 
+    void shutdown();
+
 public slots:
 
 private:
