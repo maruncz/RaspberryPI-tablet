@@ -125,6 +125,10 @@ char test_nap(void)
 {
     ac=(530<=mer(3));
     batt=(300<=mer(4));
+    if((zap==1)&&!(batt||ac))
+    {
+        interrupt(3);
+    }
     return (batt||ac);
 }
 
@@ -149,6 +153,9 @@ uint8_t interrupted()
         break;
     case 2:
         return 0x41;
+        break;
+    case 3:
+        return 0x42;
         break;
     default:
         return 0x99;
