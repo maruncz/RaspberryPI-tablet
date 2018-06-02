@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitaction, SIGNAL(triggered()), this, SLOT(on_actionQuit_triggered()));
     connect(&trayicon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(on_trayicon_activated(QSystemTrayIcon::ActivationReason)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(on_timer_timeout()));
-    //connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
+    connect(idle,SIGNAL(idled()),this,SLOT(on_idled()));
     connect(&gpio,SIGNAL(lock()),this,SLOT(on_lock()));
     connect(&gpio,SIGNAL(wake()),this,SLOT(on_wake()));
     connect(&gpio,SIGNAL(shutdown()),this,SLOT(on_shutdown()));
@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     idle->wake();
     shutdown.setProgram("sudo");;
     shutdown.setArguments(QStringList("shutdown -h now"));
+    ui->idle_threshold->setValue(idle->threshold/60000);
 }
 
 MainWindow::~MainWindow()
@@ -140,4 +141,8 @@ void MainWindow::on_shutdown()
 {
     shutdown.start();
     shutdown.waitForFinished(1000);
+}
+void MainWindow::on_idle_set_clicked()
+{
+    idle->threshold=ui->idle_threshold->value()*60000;
 }

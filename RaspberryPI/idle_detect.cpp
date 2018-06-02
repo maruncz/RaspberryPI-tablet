@@ -12,7 +12,7 @@ idle_detect::idle_detect(QObject *parent) :
     timer.setInterval(1000);
     timer.setSingleShot(false);
     timer.start();
-    threshold=60000;
+    threshold=120000;
     time=0;
     s.clear();
 }

@@ -54,6 +54,8 @@ private slots:
 
     void on_shutdown();
 
+    void on_idle_set_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon trayicon;
@@ -70,6 +72,7 @@ private:
     hwinfo hw;
 
     QProcess shutdown;
+
 
 
 
